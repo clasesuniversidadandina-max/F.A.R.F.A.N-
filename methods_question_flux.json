@@ -1,0 +1,2033 @@
+{
+  "metadata": {
+    "total_methods": 416,
+    "total_questions": 30,
+    "dimensions": 6,
+    "files": {
+      "PP": "policy_processor.py",
+      "CD": "contradiction_deteccion.py",
+      "FV": "financiero_viabilidad_tablas.py",
+      "DB": "dereck_beach.py",
+      "RA": "report_assembly.py",
+      "EP": "embedding_policy.py",
+      "A1": "Analyzer_one.py",
+      "TC": "teoria_cambio.py",
+      "SC": "semantic_chunking_policy.py"
+    },
+    "types": {
+      "E": "Extracción",
+      "V": "Validación",
+      "T": "Transformación",
+      "C": "Cálculo",
+      "O": "Orquestación",
+      "R": "Reporte"
+    },
+    "priority": {
+      "3": "Crítico (★)",
+      "2": "Importante (◆)",
+      "1": "Complementario (○)"
+    }
+  },
+  "dimensions": [
+    {
+      "id": "D1",
+      "name": "Diagnóstico y Consistencia Inicial",
+      "total_methods": 80,
+      "questions": [
+        {
+          "q": "D1-Q1",
+          "t": "Líneas Base y Brechas Cuantificadas",
+          "m": 18,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["process", "_match_patterns_in_sentences", "_construct_evidence_bundle"],
+              "t": ["O", "E", "R"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score", "_calculate_shannon_entropy"],
+              "t": ["C", "C"],
+              "pr": [3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_extract_temporal_markers", "_determine_semantic_role", "_calculate_confidence_interval", "_statistical_significance_test", "_get_context_window"],
+              "t": ["E", "T", "E", "V", "C", "V", "E"],
+              "pr": [3, 3, 2, 3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_calculate_semantic_complexity", "_classify_policy_domain"],
+              "t": ["C", "V"],
+              "pr": [2, 1]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric", "_classify_evidence_strength"],
+              "t": ["C", "V"],
+              "pr": [3, 2]
+            }
+          ],
+          "flow": "PP.O → CD.E+T → CD.V → CD.C → A1.C || EP.C → PP.R"
+        },
+        {
+          "q": "D1-Q2",
+          "t": "Normalización y Fuentes",
+          "m": 12,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_compile_pattern_registry"],
+              "t": ["E", "T"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["normalize_unicode"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_parse_number", "_extract_quantitative_claims", "_are_comparable_claims", "_calculate_numerical_divergence", "_determine_semantic_role"],
+              "t": ["T", "E", "V", "C", "V"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["_extract_numerical_values"],
+              "t": ["E"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["_compute_coherence"],
+              "t": ["C"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.E → PP.T → CD.E+T → CD.V+C → EP.E+C"
+        },
+        {
+          "q": "D1-Q3",
+          "t": "Asignación de Recursos",
+          "m": 22,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process", "_extract_point_evidence", "_construct_evidence_bundle"],
+              "t": ["E", "O", "E", "R"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_resource_mentions", "_detect_numerical_inconsistencies", "_are_comparable_claims", "_calculate_numerical_divergence", "_detect_resource_conflicts", "_are_conflicting_allocations", "_statistical_significance_test", "_calculate_confidence_interval"],
+              "t": ["E", "V", "V", "C", "V", "V", "V", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "TemporalLogicVerifier",
+              "m": ["_extract_resources"],
+              "t": ["E"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_extract_financial_amounts", "_identify_funding_source", "_analyze_funding_sources"],
+              "t": ["E", "E", "V", "C"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "FinancialAuditor",
+              "m": ["trace_financial_allocation"],
+              "t": ["O"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric", "compare_policies"],
+              "t": ["C", "C"],
+              "pr": [3, 2]
+            }
+          ],
+          "flow": "PP.O → CD.E → CD.V+C → FV.E → DB.O → EP.C → PP.R"
+        },
+        {
+          "q": "D1-Q4",
+          "t": "Capacidad Institucional",
+          "m": 16,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_build_point_patterns"],
+              "t": ["E", "T"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["extract_contextual_window"],
+              "t": ["E"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_semantic_role", "_calculate_graph_fragmentation", "_build_knowledge_graph", "_get_dependency_depth", "_identify_dependencies", "_calculate_syntactic_complexity", "_get_context_window"],
+              "t": ["V", "C", "T", "C", "E", "C", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 2]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_value_chain_link"],
+              "t": ["V"],
+              "pr": [2]
+            },
+            {
+              "f": "A1",
+              "c": "PerformanceAnalyzer",
+              "m": ["_detect_bottlenecks"],
+              "t": ["V"],
+              "pr": [2]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["_identify_critical_links"],
+              "t": ["E"],
+              "pr": [2]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["identify_responsible_entities", "_classify_entity_type"],
+              "t": ["E", "V"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.E → CD.E+T+V+C → A1.V → FV.E+V"
+        },
+        {
+          "q": "D1-Q5",
+          "t": "Restricciones Temporales",
+          "m": 14,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences"],
+              "t": ["E"],
+              "pr": [3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_detect_temporal_conflicts", "_extract_temporal_markers", "_calculate_confidence_interval"],
+              "t": ["V", "E", "C"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "TemporalLogicVerifier",
+              "m": ["verify_temporal_consistency", "_build_timeline", "_parse_temporal_marker", "_has_temporal_conflict", "_check_deadline_constraints", "_classify_temporal_type"],
+              "t": ["V", "T", "T", "V", "V", "V"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_calculate_semantic_complexity"],
+              "t": ["C"],
+              "pr": [2]
+            },
+            {
+              "f": "A1",
+              "c": "PerformanceAnalyzer",
+              "m": ["_calculate_throughput_metrics"],
+              "t": ["C"],
+              "pr": [2]
+            }
+          ],
+          "flow": "PP.E+T → CD.E → CD.V+T+C → A1.C"
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Diseño de Actividades y Coherencia",
+      "total_methods": 107,
+      "questions": [
+        {
+          "q": "D2-Q1",
+          "t": "Formato Tabular y Trazabilidad",
+          "m": 20,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_clean_dataframe", "_is_likely_header", "_deduplicate_tables", "_reconstruct_fragmented_tables", "_classify_tables", "analyze_municipal_plan", "_extract_from_budget_table", "_extract_from_responsibility_tables", "identify_responsible_entities", "_consolidate_entities", "_score_entity_specificity"],
+              "t": ["E", "T", "V", "T", "T", "V", "O", "E", "E", "E", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "TemporalLogicVerifier",
+              "m": ["_build_timeline", "_check_deadline_constraints"],
+              "t": ["T", "V"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_detect_temporal_conflicts"],
+              "t": ["V"],
+              "pr": [3]
+            },
+            {
+              "f": "SC",
+              "c": "SemanticProcessor",
+              "m": ["_detect_table"],
+              "t": ["E"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → FV.E → FV.T+V → CD.V → SC.E"
+        },
+        {
+          "q": "D2-Q2",
+          "t": "Causalidad de Actividades",
+          "m": 25,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_relation_type", "_build_knowledge_graph", "_extract_policy_statements", "_identify_dependencies", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["V", "T", "E", "E", "C", "C", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy", "_extract_goals", "_extract_goal_text", "_classify_goal_type", "_add_node_to_graph", "_extract_causal_links"],
+              "t": ["O", "E", "E", "V", "T", "E"],
+              "pr": [3, 3, 3, 3, 3, 3],
+              "note": "30 métodos en total - proceso completo Derek Beach"
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["construir_grafo_causal", "_es_conexion_valida"],
+              "t": ["T", "V"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["diagnose_critical_links", "_analyze_link_text"],
+              "t": ["V", "C"],
+              "pr": [2, 2]
+            }
+          ],
+          "flow": "PP.E → PP.C → CD.E+T+V+C → DB.O → TC.T+V → A1.V"
+        },
+        {
+          "q": "D2-Q3",
+          "t": "Responsables de Actividades",
+          "m": 18,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["identify_responsible_entities", "_extract_from_responsibility_tables", "_consolidate_entities", "_classify_entity_type", "_score_entity_specificity", "extract_tables", "_clean_dataframe"],
+              "t": ["E", "E", "T", "V", "C", "E", "T"],
+              "pr": [3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_semantic_role", "_get_context_window"],
+              "t": ["V", "E"],
+              "pr": [3, 2]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["semantic_search"],
+              "t": ["E"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_policy_domain"],
+              "t": ["V"],
+              "pr": [2]
+            }
+          ],
+          "flow": "PP.O → FV.E+T+V+C → CD.V → EP.E"
+        },
+        {
+          "q": "D2-Q4",
+          "t": "Cuantificación de Actividades",
+          "m": 21,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_extract_financial_amounts", "_extract_from_budget_table", "analyze_municipal_plan"],
+              "t": ["E", "E", "E", "O"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_extract_resource_mentions", "_are_comparable_claims", "_calculate_numerical_divergence", "_detect_numerical_inconsistencies", "_calculate_confidence_interval", "_get_context_window"],
+              "t": ["E", "T", "E", "V", "C", "V", "C", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → FV.E → CD.E+T+V+C → EP.C"
+        },
+        {
+          "q": "D2-Q5",
+          "t": "Eslabón Causal Diagnóstico-Actividades",
+          "m": 23,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_relation_type", "_build_knowledge_graph", "_extract_policy_statements", "_identify_dependencies", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["V", "T", "E", "E", "C", "C", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy"],
+              "t": ["O"],
+              "pr": [3],
+              "note": "Proceso completo con 14 métodos"
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["construir_grafo_causal", "_es_conexion_valida", "_encontrar_caminos_completos"],
+              "t": ["T", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["diagnose_critical_links", "_analyze_link_text"],
+              "t": ["V", "C"],
+              "pr": [2, 2]
+            }
+          ],
+          "flow": "PP.E+C → CD.E+T+V+C → DB.O → TC.T+V → A1.V"
+        }
+      ]
+    },
+    {
+      "id": "D3",
+      "name": "Productos, Indicadores y Especificidad",
+      "total_methods": 101,
+      "questions": [
+        {
+          "q": "D3-Q1",
+          "t": "Indicadores de Producto",
+          "m": 19,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process", "_construct_evidence_bundle"],
+              "t": ["E", "O", "R"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_are_comparable_claims", "_get_context_window", "_extract_temporal_markers"],
+              "t": ["E", "T", "V", "E", "E"],
+              "pr": [3, 3, 3, 2, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_indicator_to_dict", "_find_product_mentions", "analyze_municipal_plan", "_classify_tables"],
+              "t": ["E", "T", "E", "O", "V"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["_extract_numerical_values"],
+              "t": ["E"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → CD.E+T+V → FV.E+T+V → EP.E+C → PP.R"
+        },
+        {
+          "q": "D3-Q2",
+          "t": "Cuantificación de Productos",
+          "m": 20,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_extract_financial_amounts", "_extract_from_budget_table", "analyze_municipal_plan", "_find_product_mentions"],
+              "t": ["E", "E", "E", "O", "E"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_extract_resource_mentions", "_are_comparable_claims", "_calculate_numerical_divergence", "_detect_numerical_inconsistencies", "_calculate_confidence_interval", "_get_context_window"],
+              "t": ["E", "T", "E", "V", "C", "V", "C", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → FV.E → CD.E+T+V+C → EP.C"
+        },
+        {
+          "q": "D3-Q3",
+          "t": "Responsables de Productos",
+          "m": 17,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["identify_responsible_entities", "_extract_from_responsibility_tables", "_consolidate_entities", "_classify_entity_type", "_score_entity_specificity", "extract_tables"],
+              "t": ["E", "E", "T", "V", "C", "E"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_semantic_role", "_get_context_window", "_build_knowledge_graph"],
+              "t": ["V", "E", "T"],
+              "pr": [3, 2, 3]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["semantic_search"],
+              "t": ["E"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_policy_domain"],
+              "t": ["V"],
+              "pr": [2]
+            }
+          ],
+          "flow": "PP.O → FV.E+T+V+C → CD.V+T → EP.E"
+        },
+        {
+          "q": "D3-Q4",
+          "t": "Plazos de Productos",
+          "m": 19,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "TemporalLogicVerifier",
+              "m": ["verify_temporal_consistency", "_check_deadline_constraints", "_classify_temporal_type", "_build_timeline", "_parse_temporal_marker", "_has_temporal_conflict", "_extract_resources"],
+              "t": ["V", "V", "V", "T", "T", "V", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_detect_resource_conflicts", "_extract_temporal_markers", "_calculate_confidence_interval"],
+              "t": ["V", "E", "C"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "PerformanceAnalyzer",
+              "m": ["_calculate_throughput_metrics", "_detect_bottlenecks"],
+              "t": ["C", "V"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["_assess_risks"],
+              "t": ["V"],
+              "pr": [2]
+            }
+          ],
+          "flow": "PP.E+T → CD.E → CD.V+T+C → A1.C+V"
+        },
+        {
+          "q": "D3-Q5",
+          "t": "Eslabón Causal Producto-Resultado",
+          "m": 26,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_relation_type", "_build_knowledge_graph", "_extract_policy_statements", "_identify_dependencies", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["V", "T", "E", "E", "C", "C", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy", "_extract_causal_links", "_extract_causal_justifications", "_calculate_confidence"],
+              "t": ["O", "E", "E", "C"],
+              "pr": [3, 3, 3, 3],
+              "note": "18 métodos totales - Análisis mecanismos completo"
+            },
+            {
+              "f": "DB",
+              "c": "MechanismPartExtractor",
+              "m": ["extract_entity_activity", "_find_subject_entity", "_find_action_verb", "_validate_entity_activity", "_calculate_ea_confidence"],
+              "t": ["E", "E", "E", "V", "C"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BayesianMechanismInference",
+              "m": ["infer_mechanisms", "_build_transition_matrix", "_infer_activity_sequence", "_test_necessity", "_test_sufficiency", "_classify_mechanism_type"],
+              "t": ["O", "T", "V", "V", "V", "V"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BeachEvidentialTest",
+              "m": ["apply_test_logic"],
+              "t": ["V"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["construir_grafo_causal", "_es_conexion_valida", "_encontrar_caminos_completos"],
+              "t": ["T", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["diagnose_critical_links", "_analyze_link_text"],
+              "t": ["V", "C"],
+              "pr": [2, 2]
+            }
+          ],
+          "flow": "PP.E+C → CD.E+T+V+C → DB.O (Extractor+Mechanism+Tests) → TC.T+V → A1.V"
+        }
+      ]
+    },
+    {
+      "id": "D4",
+      "name": "Resultados, Supuestos y Alineación",
+      "total_methods": 94,
+      "questions": [
+        {
+          "q": "D4-Q1",
+          "t": "Indicadores de Resultado",
+          "m": 18,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process", "_construct_evidence_bundle"],
+              "t": ["E", "O", "R"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_are_comparable_claims", "_get_context_window", "_extract_temporal_markers"],
+              "t": ["E", "T", "V", "E", "E"],
+              "pr": [3, 3, 3, 2, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_indicator_to_dict", "_find_outcome_mentions", "analyze_municipal_plan", "_classify_tables"],
+              "t": ["E", "T", "E", "O", "V"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["_extract_numerical_values"],
+              "t": ["E"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → CD.E+T+V → FV.E+T+V → EP.E+C → PP.R"
+        },
+        {
+          "q": "D4-Q2",
+          "t": "Cadena Causal y Supuestos",
+          "m": 24,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_build_knowledge_graph", "_determine_semantic_role", "_extract_policy_statements", "_identify_dependencies", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity", "_calculate_syntactic_complexity"],
+              "t": ["T", "V", "E", "E", "C", "C", "T", "C", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy", "_extract_causal_links"],
+              "t": ["O", "E"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BayesianMechanismInference",
+              "m": ["infer_mechanisms", "_test_necessity", "_test_sufficiency"],
+              "t": ["O", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BeachEvidentialTest",
+              "m": ["classify_test"],
+              "t": ["V"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["construir_grafo_causal", "_es_conexion_valida", "validacion_completa", "_validar_orden_causal"],
+              "t": ["T", "V", "V", "V"],
+              "pr": [3, 3, 3, 3]
+            }
+          ],
+          "flow": "PP.E+C → CD.E+T+V+C → DB.O (Extractor+Tests) → TC.T+V"
+        },
+        {
+          "q": "D4-Q3",
+          "t": "Justificación de Ambición",
+          "m": 20,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["process", "_analyze_causal_dimensions"],
+              "t": ["O", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score", "_calculate_shannon_entropy"],
+              "t": ["C", "C"],
+              "pr": [3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_detect_numerical_inconsistencies", "_calculate_objective_alignment", "_are_comparable_claims", "_calculate_numerical_divergence", "_statistical_significance_test", "_extract_quantitative_claims", "_extract_resource_mentions"],
+              "t": ["V", "C", "V", "C", "V", "E", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["generate_recommendations", "analyze_financial_feasibility", "_assess_financial_sustainability", "_bayesian_risk_inference"],
+              "t": ["R", "C", "C", "C"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "FinancialAuditor",
+              "m": ["_calculate_sufficiency"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric", "compare_policies", "_classify_evidence_strength"],
+              "t": ["C", "C", "V"],
+              "pr": [3, 2, 2]
+            }
+          ],
+          "flow": "PP.O+C → CD.E+V+C → FV.C+R → DB.C → EP.C+V"
+        },
+        {
+          "q": "D4-Q4",
+          "t": "Población Objetivo",
+          "m": 15,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_determine_semantic_role", "_get_context_window", "_calculate_numerical_divergence"],
+              "t": ["E", "T", "V", "E", "C"],
+              "pr": [3, 3, 3, 2, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_cross_cutting_themes", "_classify_policy_domain", "extract_semantic_cube"],
+              "t": ["V", "V", "E"],
+              "pr": [3, 2, 2]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["semantic_search", "_filter_by_pdq"],
+              "t": ["E", "V"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.O → CD.E+T+V+C → A1.V+E → EP.E+V"
+        },
+        {
+          "q": "D4-Q5",
+          "t": "Alineación con Objetivos Superiores",
+          "m": 17,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_calculate_objective_alignment", "_build_knowledge_graph", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["C", "T", "C", "C", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_cross_cutting_themes", "_classify_policy_domain", "extract_semantic_cube"],
+              "t": ["V", "V", "E"],
+              "pr": [3, 2, 2]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["semantic_search", "compare_policy_interventions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.O → CD.C+T → A1.V+E → EP.E+C"
+        }
+      ]
+    },
+    {
+      "id": "D5",
+      "name": "Impactos y Sostenibilidad",
+      "total_methods": 91,
+      "questions": [
+        {
+          "q": "D5-Q1",
+          "t": "Indicadores de Impacto",
+          "m": 17,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process", "_construct_evidence_bundle"],
+              "t": ["E", "O", "R"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_are_comparable_claims", "_get_context_window", "_extract_temporal_markers"],
+              "t": ["E", "T", "V", "E", "E"],
+              "pr": [3, 3, 3, 2, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["extract_tables", "_indicator_to_dict", "analyze_municipal_plan", "_classify_tables"],
+              "t": ["E", "T", "O", "V"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → CD.E+T+V → FV.E+T+V → EP.C → PP.R"
+        },
+        {
+          "q": "D5-Q2",
+          "t": "Eslabón Causal Resultado-Impacto",
+          "m": 25,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_determine_relation_type", "_build_knowledge_graph", "_extract_policy_statements", "_identify_dependencies", "_get_dependency_depth", "_calculate_global_semantic_coherence", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["V", "T", "E", "E", "C", "C", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy", "_extract_causal_links", "_extract_causal_justifications"],
+              "t": ["O", "E", "E"],
+              "pr": [3, 3, 3],
+              "note": "Proceso completo con 14 métodos"
+            },
+            {
+              "f": "DB",
+              "c": "BayesianMechanismInference",
+              "m": ["infer_mechanisms", "_test_necessity", "_test_sufficiency", "_classify_mechanism_type"],
+              "t": ["O", "V", "V", "V"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BeachEvidentialTest",
+              "m": ["apply_test_logic"],
+              "t": ["V"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["construir_grafo_causal", "_es_conexion_valida", "_encontrar_caminos_completos"],
+              "t": ["T", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["diagnose_critical_links"],
+              "t": ["V"],
+              "pr": [2]
+            }
+          ],
+          "flow": "PP.E+C → CD.E+T+V+C → DB.O (Extractor+Inference+Tests) → TC.T+V"
+        },
+        {
+          "q": "D5-Q3",
+          "t": "Evidencia de Causalidad",
+          "m": 19,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_quantitative_claims", "_parse_number", "_calculate_confidence_interval", "_statistical_significance_test", "_generate_embeddings", "_calculate_similarity"],
+              "t": ["E", "T", "C", "V", "T", "C"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy", "_extract_causal_justifications"],
+              "t": ["O", "E"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BayesianMechanismInference",
+              "m": ["infer_mechanisms", "_test_necessity", "_test_sufficiency"],
+              "t": ["O", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "EP",
+              "c": "BayesianNumericalAnalyzer",
+              "m": ["evaluate_policy_metric"],
+              "t": ["C"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.O → CD.E+T+V+C → DB.O (Extractor+Tests) → EP.C"
+        },
+        {
+          "q": "D5-Q4",
+          "t": "Plazos de Impacto",
+          "m": 15,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "TemporalLogicVerifier",
+              "m": ["verify_temporal_consistency", "_check_deadline_constraints", "_classify_temporal_type", "_build_timeline", "_parse_temporal_marker", "_has_temporal_conflict"],
+              "t": ["V", "V", "V", "T", "T", "V"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_temporal_markers", "_calculate_confidence_interval"],
+              "t": ["E", "C"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "A1",
+              "c": "PerformanceAnalyzer",
+              "m": ["_calculate_throughput_metrics", "_detect_bottlenecks"],
+              "t": ["C", "V"],
+              "pr": [2, 2]
+            }
+          ],
+          "flow": "PP.E+T → CD.E → CD.V+T+C → A1.C+V"
+        },
+        {
+          "q": "D5-Q5",
+          "t": "Sostenibilidad Financiera",
+          "m": 15,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["analyze_financial_feasibility", "_assess_financial_sustainability", "_bayesian_risk_inference", "_analyze_funding_sources", "extract_tables"],
+              "t": ["C", "C", "C", "C", "E"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_extract_resource_mentions", "_detect_resource_conflicts", "_calculate_numerical_divergence"],
+              "t": ["E", "V", "C"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "FinancialAuditor",
+              "m": ["trace_financial_allocation", "_calculate_sufficiency"],
+              "t": ["O", "C"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.O → FV.E+C → CD.E+V+C → DB.O+C"
+        }
+      ]
+    },
+    {
+      "id": "D6",
+      "name": "Causalidad, Coherencia Global y Adaptabilidad",
+      "total_methods": 155,
+      "questions": [
+        {
+          "q": "D6-Q1",
+          "t": "Integridad de Teoría de Cambio",
+          "m": 32,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_analyze_causal_dimensions", "process"],
+              "t": ["E", "C", "O"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["validacion_completa", "_encontrar_caminos_completos", "_validar_orden_causal", "construir_grafo_causal", "_es_conexion_valida"],
+              "t": ["V", "V", "V", "T", "V"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "TC",
+              "c": "AdvancedDAGValidator",
+              "m": ["calculate_acyclicity_pvalue", "_calculate_statistical_power", "_calculate_bayesian_posterior", "_perform_sensitivity_analysis_internal", "get_graph_stats"],
+              "t": ["V", "C", "C", "V", "C"],
+              "pr": [3, 3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_build_knowledge_graph", "_get_graph_statistics", "_calculate_graph_fragmentation", "_identify_dependencies", "_get_dependency_depth"],
+              "t": ["T", "C", "C", "E", "C"],
+              "pr": [3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalExtractor",
+              "m": ["extract_causal_hierarchy"],
+              "t": ["O"],
+              "pr": [3],
+              "note": "Proceso completo con 14 métodos"
+            },
+            {
+              "f": "DB",
+              "c": "OperationalizationAuditor",
+              "m": ["audit_evidence_traceability", "_audit_systemic_risk", "bayesian_counterfactual_audit", "_generate_optimal_remediations"],
+              "t": ["V", "V", "V", "R"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CDAFFramework",
+              "m": ["process_document", "_audit_causal_coherence", "_validate_dnp_compliance", "_generate_extraction_report"],
+              "t": ["O", "V", "V", "R"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["construct_causal_dag", "_identify_causal_nodes", "_identify_causal_edges"],
+              "t": ["T", "E", "E"],
+              "pr": [3, 3, 3]
+            }
+          ],
+          "flow": "PP.O → TC.V (validacion_completa) → TC.T (construir_grafo) → CD.T+C → DB.O (CausalExtractor+Auditor+Framework) → FV.T"
+        },
+        {
+          "q": "D6-Q2",
+          "t": "Proporcionalidad y Continuidad (Anti-Milagro)",
+          "m": 28,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "_compile_pattern_registry", "_build_point_patterns", "process"],
+              "t": ["E", "T", "T", "O"],
+              "pr": [3, 3, 3, 3],
+              "note": "3 categorías: enlaces_proporcionales, sin_saltos, no_milagros"
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3],
+              "note": "min_score: 0.0 si milagro detectado"
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_calculate_syntactic_complexity", "_build_knowledge_graph", "_get_dependency_depth", "_identify_dependencies", "_determine_relation_type", "_calculate_numerical_divergence", "_statistical_significance_test", "_detect_numerical_inconsistencies", "_are_comparable_claims", "_calculate_confidence_interval", "_get_context_window"],
+              "t": ["C", "T", "C", "E", "V", "C", "V", "V", "V", "C", "E"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["validacion_completa", "_encontrar_caminos_completos", "_validar_orden_causal"],
+              "t": ["V", "V", "V"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "TC",
+              "c": "AdvancedDAGValidator",
+              "m": ["calculate_acyclicity_pvalue", "_calculate_statistical_power", "_calculate_bayesian_posterior"],
+              "t": ["V", "C", "C"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "BeachEvidentialTest",
+              "m": ["classify_test", "apply_test_logic"],
+              "t": ["V", "V"],
+              "pr": [3, 3],
+              "note": "4 tipos: Hoop, Smoking Gun, Doubly Decisive, Straw in Wind"
+            },
+            {
+              "f": "DB",
+              "c": "BayesianMechanismInference",
+              "m": ["_test_necessity", "_test_sufficiency", "_build_transition_matrix", "_calculate_type_transition_prior", "_infer_activity_sequence", "_aggregate_bayesian_confidence"],
+              "t": ["V", "V", "T", "C", "V", "C"],
+              "pr": [3, 3, 3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "CausalInferenceSetup",
+              "m": ["classify_goal_dynamics", "identify_failure_points", "assign_probative_value", "_get_dynamics_pattern"],
+              "t": ["V", "V", "C", "E"],
+              "pr": [3, 3, 3, 3],
+              "note": "CRÍTICO: detecta gradual vs. abrupta para anti-milagro"
+            },
+            {
+              "f": "DB",
+              "c": "OperationalizationAuditor",
+              "m": ["_audit_systemic_risk", "bayesian_counterfactual_audit"],
+              "t": ["V", "V"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.E+T (3 categorías patrones) → CD.T+V+C → TC.V → DB (Beach Tests + Inference + Setup) → DB.Auditor"
+        },
+        {
+          "q": "D6-Q3",
+          "t": "Inconsistencias (Sistema Bicameral - Ruta 1)",
+          "m": 22,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences"],
+              "t": ["T"],
+              "pr": [2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_detect_logical_incompatibilities", "detect", "_detect_semantic_contradictions", "_detect_numerical_inconsistencies", "_detect_temporal_conflicts", "_detect_resource_conflicts", "_classify_contradiction", "_calculate_severity", "_generate_resolution_recommendations", "_suggest_resolutions", "_calculate_contradiction_entropy", "_get_domain_weight", "_has_logical_conflict"],
+              "t": ["V", "V", "V", "V", "V", "V", "V", "C", "R", "R", "C", "C", "V"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3],
+              "note": "RUTA 1: Detección local + _suggest_resolutions CRÍTICO"
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["diagnose_critical_links", "_identify_critical_links"],
+              "t": ["V", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["validacion_completa", "_validar_orden_causal"],
+              "t": ["V", "V"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.O → CD.V (detect suite) → CD.R (_suggest_resolutions) → TC.V → A1.V",
+          "note": "Sistema Bicameral - Esta es RUTA 1 de detección local"
+        },
+        {
+          "q": "D6-Q4",
+          "t": "Adaptación (Sistema Bicameral - Ruta 2)",
+          "m": 26,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "TC",
+              "c": "TeoriaCambio",
+              "m": ["validacion_completa", "_validar_orden_causal", "_encontrar_caminos_completos", "_generar_sugerencias_internas", "_execute_generar_sugerencias_internas", "_extraer_categorias", "_es_conexion_valida", "construir_grafo_causal"],
+              "t": ["V", "V", "V", "R", "R", "E", "V", "T"],
+              "pr": [3, 3, 3, 3, 3, 3, 3, 3],
+              "note": "RUTA 2: Motor axiomático + _generar_sugerencias_internas CRÍTICO"
+            },
+            {
+              "f": "TC",
+              "c": "AdvancedDAGValidator",
+              "m": ["calculate_acyclicity_pvalue", "_perform_sensitivity_analysis_internal", "_calculate_confidence_interval", "get_graph_stats"],
+              "t": ["V", "V", "C", "C"],
+              "pr": [3, 3, 3, 2]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_build_knowledge_graph", "_get_graph_statistics", "_calculate_graph_fragmentation", "_identify_dependencies"],
+              "t": ["T", "C", "C", "E"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "PerformanceAnalyzer",
+              "m": ["_generate_recommendations"],
+              "t": ["R"],
+              "pr": [2]
+            },
+            {
+              "f": "A1",
+              "c": "TextMiningEngine",
+              "m": ["_generate_interventions"],
+              "t": ["R"],
+              "pr": [2]
+            },
+            {
+              "f": "DB",
+              "c": "CDAFFramework",
+              "m": ["_validate_dnp_compliance", "_generate_extraction_report", "_generate_causal_model_json", "_generate_dnp_compliance_report"],
+              "t": ["V", "R", "R", "R"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "OperationalizationAuditor",
+              "m": ["audit_evidence_traceability", "_perform_counterfactual_budget_check"],
+              "t": ["V", "V"],
+              "pr": [3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "FinancialAuditor",
+              "m": ["trace_financial_allocation", "_match_goal_to_budget", "_calculate_sufficiency", "_detect_allocation_gaps"],
+              "t": ["O", "V", "C", "V"],
+              "pr": [3, 3, 3, 3]
+            },
+            {
+              "f": "DB",
+              "c": "MechanismTypeConfig",
+              "m": ["check_sum_to_one"],
+              "t": ["V"],
+              "pr": [3]
+            },
+            {
+              "f": "FV",
+              "c": "PDETMunicipalPlanAnalyzer",
+              "m": ["generate_recommendations", "_generate_optimal_remediations"],
+              "t": ["R", "R"],
+              "pr": [3, 3]
+            }
+          ],
+          "flow": "PP.O → TC.V+R (_generar_sugerencias_internas) → CD.T+C → DB (CDAF+Auditors) → FV.R",
+          "note": "Sistema Bicameral - Esta es RUTA 2 de inferencia estructural"
+        },
+        {
+          "q": "D6-Q5",
+          "t": "Contextualización y Enfoque Diferencial",
+          "m": 24,
+          "p": [
+            {
+              "f": "PP",
+              "c": "IndustrialPolicyProcessor",
+              "m": ["_match_patterns_in_sentences", "process"],
+              "t": ["E", "O"],
+              "pr": [3, 3],
+              "note": "Patrones: mujeres_rurales, población_migrante, víctimas_conflicto, restricciones_territoriales"
+            },
+            {
+              "f": "PP",
+              "c": "PolicyTextProcessor",
+              "m": ["segment_into_sentences", "extract_contextual_window"],
+              "t": ["T", "E"],
+              "pr": [2, 2]
+            },
+            {
+              "f": "PP",
+              "c": "BayesianEvidenceScorer",
+              "m": ["compute_evidence_score"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "CD",
+              "c": "PolicyContradictionDetector",
+              "m": ["_generate_embeddings", "_calculate_similarity", "_identify_dependencies", "_determine_semantic_role", "_calculate_global_semantic_coherence", "_get_context_window", "_build_knowledge_graph"],
+              "t": ["T", "C", "E", "V", "C", "E", "T"],
+              "pr": [3, 3, 3, 3, 3, 2, 3]
+            },
+            {
+              "f": "CD",
+              "c": "BayesianConfidenceCalculator",
+              "m": ["calculate_posterior"],
+              "t": ["C"],
+              "pr": [3]
+            },
+            {
+              "f": "A1",
+              "c": "SemanticAnalyzer",
+              "m": ["_classify_cross_cutting_themes", "_classify_policy_domain", "extract_semantic_cube", "_process_segment", "_vectorize_segments", "_calculate_semantic_complexity"],
+              "t": ["V", "V", "E", "T", "T", "C"],
+              "pr": [3, 2, 2, 2, 2, 2],
+              "note": "_classify_cross_cutting_themes marcado como CRÍTICO"
+            },
+            {
+              "f": "A1",
+              "c": "MunicipalOntology",
+              "m": ["__init__"],
+              "t": ["O"],
+              "pr": [2]
+            },
+            {
+              "f": "EP",
+              "c": "PolicyAnalysisEmbedder",
+              "m": ["semantic_search", "_filter_by_pdq", "compare_policy_interventions"],
+              "t": ["E", "V", "C"],
+              "pr": [3, 3, 3]
+            },
+            {
+              "f": "EP",
+              "c": "AdvancedSemanticChunker",
+              "m": ["_infer_pdq_context"],
+              "t": ["V"],
+              "pr": [3]
+            }
+          ],
+          "flow": "PP.E (patrones diferenciales) → CD.T+V+C → A1.V+E (_classify_cross_cutting_themes) → EP.E+V+C"
+        }
+      ]
+    }
+  ],
+  "special_features": {
+    "bicameral_system": {
+      "questions": ["D6-Q3", "D6-Q4"],
+      "route_1": {
+        "name": "Detección Local",
+        "method": "PolicyContradictionDetector._suggest_resolutions",
+        "file": "CD"
+      },
+      "route_2": {
+        "name": "Inferencia Estructural",
+        "method": "TeoriaCambio._generar_sugerencias_internas",
+        "file": "TC"
+      }
+    },
+    "anti_milagro_validation": {
+      "question": "D6-Q2",
+      "categories": [
+        "enlaces_proporcionales (proporcional_a, acorde_con, razonable, realista)",
+        "sin_saltos (sin_saltos, gradual, incremental, paso_a_paso)",
+        "no_milagros (factible, posible, alcanzable, sin_suponer)"
+      ]
+    },
+    "derek_beach_process_tracing": {
+      "integration": "100%",
+      "tests": [
+        {
+          "name": "Hoop Test",
+          "type": "Necesario pero NO Suficiente",
+          "method": "BayesianMechanismInference._test_necessity",
+          "logic": "Si FALLA → Hipótesis eliminada | Si PASA → Sobrevive"
+        },
+        {
+          "name": "Smoking Gun Test",
+          "type": "Suficiente pero NO Necesario",
+          "method": "BayesianMechanismInference._test_sufficiency",
+          "logic": "Si PASA → Hipótesis confirmada | Si FALLA → Sobrevive"
+        },
+        {
+          "name": "Doubly Decisive Test",
+          "type": "Necesario Y Suficiente",
+          "method": "BeachEvidentialTest.apply_test_logic (DOUBLY_DECISIVE)",
+          "logic": "Si PASA → Confirmada | Si FALLA → Eliminada"
+        },
+        {
+          "name": "Straw in Wind Test",
+          "type": "Ni Necesario Ni Suficiente",
+          "method": "BeachEvidentialTest.apply_test_logic (STRAW_IN_WIND)",
+          "logic": "Actualiza probabilidades levemente"
+        }
+      ]
+    },
+    "cdaf_framework": {
+      "components": [
+        "ConfigLoader: Gestión configuración bayesiana",
+        "PDFProcessor: Extracción texto, tablas, secciones",
+        "CausalExtractor: Jerarquía causal (14 métodos)",
+        "MechanismPartExtractor: Entidad-actividad",
+        "BayesianMechanismInference: Inferencia bayesiana (9 métodos)",
+        "CausalInferenceSetup: Dinámica y puntos de falla",
+        "OperationalizationAuditor: Trazabilidad y riesgo sistémico",
+        "FinancialAuditor: Trazabilidad financiera",
+        "CDAFFramework: Orquestador principal con validación DNP"
+      ]
+    }
+  }
+}
