@@ -1,0 +1,1279 @@
+## DIMENSIÓN D1: INSUMOS
+
+### D1-Q1: Líneas Base y Brechas Cuantificadas
+**Pregunta**: ¿El diagnóstico presenta datos numéricos cuantificando brechas?
+
+#### MÉTODOS PARTICIPANTES (18 métodos):
+
+**1. policy_processor.py (6 métodos)**
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Punto de entrada, orquesta todo el análisis
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de fuentes oficiales (DANE, DNP, Medicina Legal)
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto para análisis granular
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Calcula confianza bayesiana de la evidencia
+- `BayesianEvidenceScorer._calculate_shannon_entropy()` - **JUSTIFICACIÓN**: Penaliza evidencia fragmentada/inconsistente
+- `IndustrialPolicyProcessor._construct_evidence_bundle()` - **JUSTIFICACIÓN**: Empaqueta evidencia para reporte MICRO
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae cifras numéricas (%, tasas, porcentajes)
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza formatos numéricos (15%, 15 por ciento, quince porciento)
+- `PolicyContradictionDetector._extract_temporal_markers()` - **JUSTIFICACIÓN**: Identifica temporalidad de las brechas (2020, 2023, etc.)
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica si es brecha real vs. aspiración
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: Calcula intervalo de confianza 95% para cifras
+- `PolicyContradictionDetector._statistical_significance_test()` - **JUSTIFICACIÓN**: Valida significancia estadística de brechas
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Actualiza confianza con parámetro pattern_specificity
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Extrae contexto alrededor de cifras
+
+**3. Analyzer_one.py (2 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Evalúa complejidad sintáctica del diagnóstico
+- `SemanticAnalyzer._classify_policy_domain()` - **JUSTIFICACIÓN**: Clasifica dominio de política para contextualizar
+
+**4. embedding_policy.py (2 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia de métricas numéricas
+- `BayesianNumericalAnalyzer._classify_evidence_strength()` - **JUSTIFICACIÓN**: Clasifica fuerza de evidencia (débil/moderada/fuerte)
+
+---
+
+### D1-Q2: Normalización y Fuentes
+**Pregunta**: ¿El texto dimensiona el problema cuantificando la brecha con fuentes oficiales?
+
+#### MÉTODOS PARTICIPANTES (12 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de fuentes (DANE, DNP, Fiscalía, ICBF)
+- `IndustrialPolicyProcessor._compile_pattern_registry()` - **JUSTIFICACIÓN**: Compila regex optimizados para fuentes
+- `PolicyTextProcessor.normalize_unicode()` - **JUSTIFICACIÓN**: Normaliza caracteres especiales en nombres de fuentes
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Mayor score si fuente oficial presente
+
+**2. contradiction_deteccion.py (6 métodos)**
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza cifras para comparación
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae claims numéricos vinculados a fuentes
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica si claims son comparables
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Detecta divergencias entre fuentes
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Distingue fuente primaria vs. secundaria
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Ajusta confianza según especificidad de fuente
+
+**3. embedding_policy.py (2 métodos)**
+- `PolicyAnalysisEmbedder._extract_numerical_values()` - **JUSTIFICACIÓN**: Extrae valores numéricos con contexto
+- `BayesianNumericalAnalyzer._compute_coherence()` - **JUSTIFICACIÓN**: Verifica coherencia entre fuentes
+
+---
+
+### D1-Q3: Asignación de Recursos
+**Pregunta**: ¿Se identifican recursos presupuestales suficientes para abordar la brecha?
+
+#### MÉTODOS PARTICIPANTES (22 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones "suficiente para", "recursos asignados"
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de recursos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de suficiencia
+- `IndustrialPolicyProcessor._extract_point_evidence()` - **JUSTIFICACIÓN**: Extrae evidencia específica de recursos
+- `IndustrialPolicyProcessor._construct_evidence_bundle()` - **JUSTIFICACIÓN**: Empaqueta evidencia de recursos
+
+**2. contradiction_deteccion.py (10 métodos)**
+- `PolicyContradictionDetector._extract_resource_mentions()` - **JUSTIFICACIÓN**: Extrae montos (COP, millones, miles de millones)
+- `PolicyContradictionDetector._detect_numerical_inconsistencies()` - **JUSTIFICACIÓN**: Compara magnitud recursos vs. brecha
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad recursos-brecha
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Calcula divergencia recursos/necesidad
+- `PolicyContradictionDetector._detect_resource_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos presupuestales
+- `PolicyContradictionDetector._are_conflicting_allocations()` - **JUSTIFICACIÓN**: Verifica sobreasignación/subasignación
+- `PolicyContradictionDetector._statistical_significance_test()` - **JUSTIFICACIÓN**: Test de proporcionalidad recursos/brecha
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para estimaciones presupuestales
+- `TemporalLogicVerifier._extract_resources()` - **JUSTIFICACIÓN**: Extrae recursos con temporalidad
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Actualiza confianza en suficiencia
+
+**3. financiero_viabilidad_tablas.py (4 métodos)**
+- `PDETMunicipalPlanAnalyzer.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas presupuestales (PPI, BPIN)
+- `PDETMunicipalPlanAnalyzer._extract_financial_amounts()` - **JUSTIFICACIÓN**: Extrae montos de tablas
+- `PDETMunicipalPlanAnalyzer._identify_funding_source()` - **JUSTIFICACIÓN**: Identifica fuente de financiación
+- `PDETMunicipalPlanAnalyzer._analyze_funding_sources()` - **JUSTIFICACIÓN**: Analiza diversidad de fuentes
+
+**4. dereck_beach.py (1 método)**
+- `FinancialAuditor.trace_financial_allocation()` - **JUSTIFICACIÓN**: Traza asignación presupuestal completa
+
+**5. embedding_policy.py (2 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia recursos/brecha
+- `BayesianNumericalAnalyzer.compare_policies()` - **JUSTIFICACIÓN**: Compara asignaciones entre políticas
+
+---
+
+### D1-Q4: Capacidad Institucional
+**Pregunta**: ¿El PDM describe capacidades institucionales (talento humano, procesos, gobernanza)?
+
+#### MÉTODOS PARTICIPANTES (16 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: talento_humano, procesos, datos_sistemas, cuellos_botella
+- `IndustrialPolicyProcessor._build_point_patterns()` - **JUSTIFICACIÓN**: Construye patrones específicos de capacidad
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Extrae contexto alrededor de menciones de capacidad
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de capacidad
+
+**2. contradiction_deteccion.py (7 métodos)**
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica: capacidad existente vs. necesidad vs. brecha
+- `PolicyContradictionDetector._calculate_graph_fragmentation()` - **JUSTIFICACIÓN**: Mide complejidad estructural (coordinación/articulación)
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo de actores/capacidades
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Evalúa profundidad de dependencias institucionales
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias entre capacidades
+- `PolicyContradictionDetector._calculate_syntactic_complexity()` - **JUSTIFICACIÓN**: Evalúa claridad de descripción de capacidades
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de menciones de capacidad
+
+**3. Analyzer_one.py (3 métodos)**
+- `SemanticAnalyzer._classify_value_chain_link()` - **JUSTIFICACIÓN**: Clasifica capacidades en cadena de valor
+- `PerformanceAnalyzer._detect_bottlenecks()` - **JUSTIFICACIÓN**: Detecta cuellos de botella institucionales
+- `TextMiningEngine._identify_critical_links()` - **JUSTIFICACIÓN**: Identifica eslabones críticos de capacidad
+
+**4. financiero_viabilidad_tablas.py (2 métodos)**
+- `PDETMunicipalPlanAnalyzer.identify_responsible_entities()` - **JUSTIFICACIÓN**: Identifica entidades responsables
+- `PDETMunicipalPlanAnalyzer._classify_entity_type()` - **JUSTIFICACIÓN**: Clasifica tipo de entidad (ejecutora/supervisora/aliada)
+
+---
+
+### D1-Q5: Restricciones Temporales
+**Pregunta**: ¿El plan justifica su alcance mencionando restricciones temporales?
+
+#### MÉTODOS PARTICIPANTES (14 métodos):
+
+**1. policy_processor.py (3 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de restricción temporal
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis temporal
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de justificación temporal
+
+**2. contradiction_deteccion.py (9 métodos)**
+- `PolicyContradictionDetector._detect_temporal_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos temporales
+- `PolicyContradictionDetector._extract_temporal_markers()` - **JUSTIFICACIÓN**: Extrae marcadores temporales (2024-2027, 4 años)
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para penalizar restricciones no mitigadas
+- `TemporalLogicVerifier.verify_temporal_consistency()` - **JUSTIFICACIÓN**: Verifica consistencia temporal global
+- `TemporalLogicVerifier._build_timeline()` - **JUSTIFICACIÓN**: Construye línea de tiempo del plan
+- `TemporalLogicVerifier._parse_temporal_marker()` - **JUSTIFICACIÓN**: Parsea marcadores temporales
+- `TemporalLogicVerifier._has_temporal_conflict()` - **JUSTIFICACIÓN**: Detecta conflictos en timeline
+- `TemporalLogicVerifier._check_deadline_constraints()` - **JUSTIFICACIÓN**: Verifica restricciones de plazo
+- `TemporalLogicVerifier._classify_temporal_type()` - **JUSTIFICACIÓN**: Clasifica tipo temporal (corto/mediano/largo plazo)
+
+**3. Analyzer_one.py (2 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Evalúa complejidad de justificación temporal
+- `PerformanceAnalyzer._calculate_throughput_metrics()` - **JUSTIFICACIÓN**: Calcula métricas de throughput temporal
+
+---
+
+## DIMENSIÓN D2: DISEÑO DE ACTIVIDADES Y COHERENCIA
+
+### D2-Q1: Formato Tabular y Trazabilidad
+**Pregunta**: ¿Las actividades se presentan en formato estructurado (tabla, BPIN, cronograma)?
+
+#### MÉTODOS PARTICIPANTES (20 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: tabla, columna_costo, BPIN, cronograma
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de formalización
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para detectar estructura
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de formalización
+
+**2. financiero_viabilidad_tablas.py (12 métodos)**
+- `PDETMunicipalPlanAnalyzer.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas estructuradas (ExtractedTable)
+- `PDETMunicipalPlanAnalyzer._clean_dataframe()` - **JUSTIFICACIÓN**: Limpia tablas extraídas
+- `PDETMunicipalPlanAnalyzer._is_likely_header()` - **JUSTIFICACIÓN**: Identifica headers de tabla
+- `PDETMunicipalPlanAnalyzer._deduplicate_tables()` - **JUSTIFICACIÓN**: Elimina tablas duplicadas
+- `PDETMunicipalPlanAnalyzer._reconstruct_fragmented_tables()` - **JUSTIFICACIÓN**: Reconstruye tablas fragmentadas
+- `PDETMunicipalPlanAnalyzer._classify_tables()` - **JUSTIFICACIÓN**: Clasifica tipo de tabla (actividades/presupuesto/cronograma)
+- `PDETMunicipalPlanAnalyzer.analyze_municipal_plan()` - **JUSTIFICACIÓN**: Análisis completo de plan municipal
+- `PDETMunicipalPlanAnalyzer._extract_from_budget_table()` - **JUSTIFICACIÓN**: Extrae datos de tablas presupuestales
+- `PDETMunicipalPlanAnalyzer._extract_from_responsibility_tables()` - **JUSTIFICACIÓN**: Extrae responsables de tablas
+- `PDETMunicipalPlanAnalyzer.identify_responsible_entities()` - **JUSTIFICACIÓN**: Identifica entidades en tablas
+- `PDETMunicipalPlanAnalyzer._consolidate_entities()` - **JUSTIFICACIÓN**: Consolida entidades de múltiples tablas
+- `PDETMunicipalPlanAnalyzer._score_entity_specificity()` - **JUSTIFICACIÓN**: Puntúa especificidad de entidades
+
+**3. contradiction_deteccion.py (3 métodos)**
+- `TemporalLogicVerifier._build_timeline()` - **JUSTIFICACIÓN**: Construye timeline de cronogramas
+- `TemporalLogicVerifier._check_deadline_constraints()` - **JUSTIFICACIÓN**: Verifica restricciones de cronograma
+- `PolicyContradictionDetector._detect_temporal_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos en cronogramas
+
+**4. semantic_chunking_policy.py (1 método)**
+- `SemanticProcessor._detect_table()` - **JUSTIFICACIÓN**: Detecta presencia de tablas en texto
+
+---
+
+### D2-Q2: Causalidad de Actividades
+**Pregunta**: ¿La descripción de actividades detalla el mecanismo causal (mediante, porque, genera)?
+
+#### MÉTODOS PARTICIPANTES (25 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: porque, genera, mediante, para_abordar_causa
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza dimensiones causales
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis causal
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Extrae contexto de mecanismos causales
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de causalidad
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._determine_relation_type()` - **JUSTIFICACIÓN**: Clasifica fuerza relación causal (débil/moderada/fuerte)
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo Actividad→Diagnóstico
+- `PolicyContradictionDetector._extract_policy_statements()` - **JUSTIFICACIÓN**: Extrae declaraciones de política
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias causales
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Evalúa profundidad causal
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Mide coherencia semántica causal
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Genera embeddings para similitud causal
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Calcula similitud entre actividad-diagnóstico
+
+**3. dereck_beach.py (30 métodos - PROCESO DE TRAZADO COMPLETO)**
+- `CausalExtractor.__init__()` - **JUSTIFICACIÓN**: Inicializa extractor con config y modelo NLP
+- `CausalExtractor.extract_causal_hierarchy()` - **JUSTIFICACIÓN**: Extrae jerarquía causal completa
+- `CausalExtractor._extract_goals()` - **JUSTIFICACIÓN**: Extrae objetivos causales
+- `CausalExtractor._extract_goal_text()` - **JUSTIFICACIÓN**: Extrae texto de objetivos
+- `CausalExtractor._classify_goal_type()` - **JUSTIFICACIÓN**: Clasifica tipo de objetivo (INSUMO/ACTIVIDAD/PRODUCTO/RESULTADO/IMPACTO)
+- `CausalExtractor._add_node_to_graph()` - **JUSTIFICACIÓN**: Agrega nodos al grafo causal
+- `CausalExtractor._extract_causal_links()` - **JUSTIFICACIÓN**: Extrae enlaces causales explícitos
+- `CausalExtractor._build_type_hierarchy()` - **JUSTIFICACIÓN**: Construye jerarquía de tipos causales
+- `CausalExtractor._extract_numerical_data()` - **JUSTIFICACIÓN**: Extrae datos numéricos de objetivos
+- `CausalExtractor._identify_responsible_entity()` - **JUSTIFICACIÓN**: Identifica entidad responsable
+- `CausalExtractor._extract_entity_activities()` - **JUSTIFICACIÓN**: Extrae actividades de entidades
+- `CausalExtractor._extract_contextual_risks()` - **JUSTIFICACIÓN**: Extrae riesgos contextuales
+- `CausalExtractor._extract_causal_justifications()` - **JUSTIFICACIÓN**: Extrae justificaciones causales
+- `CausalExtractor._calculate_confidence()` - **JUSTIFICACIÓN**: Calcula confianza de extracción
+- `MechanismPartExtractor.__init__()` - **JUSTIFICACIÓN**: Inicializa extractor de partes de mecanismo
+- `MechanismPartExtractor.extract_entity_activity()` - **JUSTIFICACIÓN**: Extrae par entidad-actividad del mecanismo causal
+- `MechanismPartExtractor._find_subject_entity()` - **JUSTIFICACIÓN**: Encuentra entidad sujeto en el mecanismo
+- `MechanismPartExtractor._find_action_verb()` - **JUSTIFICACIÓN**: Encuentra verbo de acción del mecanismo
+- `MechanismPartExtractor._validate_entity_activity()` - **JUSTIFICACIÓN**: Valida coherencia del par entidad-actividad
+- `MechanismPartExtractor._calculate_ea_confidence()` - **JUSTIFICACIÓN**: Calcula confianza del par entidad-actividad
+- `BayesianMechanismInference.__init__()` - **JUSTIFICACIÓN**: Inicializa inferencia bayesiana
+- `BayesianMechanismInference.infer_mechanisms()` - **JUSTIFICACIÓN**: Infiere mecanismos causales
+- `BayesianMechanismInference._test_necessity()` - **JUSTIFICACIÓN**: Test de necesidad causal (Hoop Test)
+- `BayesianMechanismInference._test_sufficiency()` - **JUSTIFICACIÓN**: Test de suficiencia causal (Smoking Gun Test)
+- `BayesianMechanismInference._classify_mechanism_type()` - **JUSTIFICACIÓN**: Clasifica tipo de mecanismo
+- `BayesianMechanismInference._aggregate_bayesian_confidence()` - **JUSTIFICACIÓN**: Agrega confianza bayesiana
+- `CausalInferenceSetup.__init__()` - **JUSTIFICACIÓN**: Inicializa setup de inferencia causal
+- `CausalInferenceSetup.classify_goal_dynamics()` - **JUSTIFICACIÓN**: Clasifica dinámica de objetivos (gradual vs. abrupta)
+- `CausalInferenceSetup.identify_failure_points()` - **JUSTIFICACIÓN**: Identifica puntos de falla en la cadena causal
+- `CausalInferenceSetup.assign_probative_value()` - **JUSTIFICACIÓN**: Asigna valor probatorio a evidencia causal
+
+**4. teoria_cambio.py (3 métodos)**
+- `TeoriaCambio.construir_grafo_causal()` - **JUSTIFICACIÓN**: Construye grafo causal completo
+- `TeoriaCambio._es_conexion_valida()` - **JUSTIFICACIÓN**: Valida conexiones causales
+- `TeoriaCambio._extraer_categorias()` - **JUSTIFICACIÓN**: Extrae categorías causales
+
+**5. Analyzer_one.py (2 métodos)**
+- `SemanticAnalyzer._classify_value_chain_link()` - **JUSTIFICACIÓN**: Clasifica eslabón en cadena causal
+- `TextMiningEngine.diagnose_critical_links()` - **JUSTIFICACIÓN**: Diagnostica enlaces causales críticos
+
+---
+
+### D2-Q3: Clasificación Temática
+**Pregunta**: ¿El PDM vincula actividades con causas raíz del diagnóstico?
+
+#### MÉTODOS PARTICIPANTES (18 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de causa_raíz
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de vinculación
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis temático
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de vinculación
+
+**2. Analyzer_one.py (6 métodos)**
+- `SemanticAnalyzer._classify_cross_cutting_themes()` - **JUSTIFICACIÓN**: Clasifica temas transversales (género, víctimas, niñez)
+- `SemanticAnalyzer._classify_policy_domain()` - **JUSTIFICACIÓN**: Clasifica dominio de política
+- `SemanticAnalyzer.extract_semantic_cube()` - **JUSTIFICACIÓN**: Extrae cubo semántico completo
+- `SemanticAnalyzer._process_segment()` - **JUSTIFICACIÓN**: Procesa segmentos temáticos
+- `SemanticAnalyzer._vectorize_segments()` - **JUSTIFICACIÓN**: Vectoriza para análisis semántico
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Calcula complejidad temática
+
+**3. contradiction_deteccion.py (5 métodos)**
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo temático
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Mide coherencia temática
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Genera embeddings temáticos
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Calcula similitud temática
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Determina rol semántico
+
+**4. embedding_policy.py (3 métodos)**
+- `PolicyAnalysisEmbedder.semantic_search()` - **JUSTIFICACIÓN**: Búsqueda semántica de temas
+- `PolicyAnalysisEmbedder._filter_by_pdq()` - **JUSTIFICACIÓN**: Filtra por Policy/Dimension/Question
+- `AdvancedSemanticChunker._infer_pdq_context()` - **JUSTIFICACIÓN**: Infiere contexto PDQ
+
+---
+
+### D2-Q4: Riesgos y Mitigación
+**Pregunta**: ¿El plan identifica riesgos, obstáculos o barreras en implementación?
+
+#### MÉTODOS PARTICIPANTES (20 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: cuellos_botella, conflictos_actividades, riesgo
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de riesgos
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Extrae contexto de riesgos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de identificación de riesgos
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._detect_logical_incompatibilities()` - **JUSTIFICACIÓN**: Detecta incompatibilidades lógicas entre actividades
+- `PolicyContradictionDetector._has_logical_conflict()` - **JUSTIFICACIÓN**: Verifica existencia de conflicto lógico
+- `PolicyContradictionDetector._detect_resource_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos de recursos
+- `PolicyContradictionDetector._calculate_contradiction_entropy()` - **JUSTIFICACIÓN**: Mide distribución de tipos de riesgos
+- `PolicyContradictionDetector._classify_contradiction()` - **JUSTIFICACIÓN**: Clasifica tipo de contradicción/riesgo
+- `PolicyContradictionDetector._calculate_severity()` - **JUSTIFICACIÓN**: Calcula severidad de riesgos
+- `PolicyContradictionDetector._generate_resolution_recommendations()` - **JUSTIFICACIÓN**: Genera recomendaciones de mitigación
+- `PolicyContradictionDetector._suggest_resolutions()` - **JUSTIFICACIÓN**: Sugiere resoluciones específicas
+
+**3. Analyzer_one.py (4 métodos)**
+- `PerformanceAnalyzer._detect_bottlenecks()` - **JUSTIFICACIÓN**: Detecta cuellos de botella operacionales
+- `PerformanceAnalyzer._calculate_loss_functions()` - **JUSTIFICACIÓN**: Calcula funciones de pérdida por riesgos
+- `TextMiningEngine._assess_risks()` - **JUSTIFICACIÓN**: Evalúa riesgos en texto
+- `TextMiningEngine._generate_interventions()` - **JUSTIFICACIÓN**: Genera intervenciones de mitigación
+
+**4. financiero_viabilidad_tablas.py (4 métodos)**
+- `PDETMunicipalPlanAnalyzer._bayesian_risk_inference()` - **JUSTIFICACIÓN**: Inferencia bayesiana de riesgos financieros
+- `PDETMunicipalPlanAnalyzer._interpret_risk()` - **JUSTIFICACIÓN**: Interpreta nivel de riesgo
+- `PDETMunicipalPlanAnalyzer.sensitivity_analysis()` - **JUSTIFICACIÓN**: Análisis de sensibilidad a riesgos
+- `PDETMunicipalPlanAnalyzer._identify_confounders()` - **JUSTIFICACIÓN**: Identifica confusores/riesgos ocultos
+
+---
+
+### D2-Q5: Coherencia Estratégica
+**Pregunta**: ¿El conjunto de actividades demuestra una estrategia coherente?
+
+#### MÉTODOS PARTICIPANTES (24 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de coherencia
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza coherencia dimensional
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis de coherencia
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de coherencia
+- `BayesianEvidenceScorer._calculate_shannon_entropy()` - **JUSTIFICACIÓN**: Penaliza incoherencia (alta entropía)
+
+**2. contradiction_deteccion.py (12 métodos)**
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Mide coherencia semántica global usando embeddings
+- `PolicyContradictionDetector._text_similarity()` - **JUSTIFICACIÓN**: Calcula similitud textual entre actividades
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo de dependencias/complementariedades
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Evalúa complejidad estructural
+- `PolicyContradictionDetector._calculate_graph_fragmentation()` - **JUSTIFICACIÓN**: Mide fragmentación (incoherencia estructural)
+- `PolicyContradictionDetector._get_graph_statistics()` - **JUSTIFICACIÓN**: Estadísticas de coherencia del grafo
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Genera embeddings para coherencia semántica
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Calcula similitud entre PolicyStatements
+- `PolicyContradictionDetector._extract_policy_statements()` - **JUSTIFICACIÓN**: Extrae declaraciones para análisis
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias estratégicas
+- `PolicyContradictionDetector._calculate_objective_alignment()` - **JUSTIFICACIÓN**: Calcula alineación con objetivos
+- `PolicyContradictionDetector._calculate_syntactic_complexity()` - **JUSTIFICACIÓN**: Evalúa claridad estratégica
+
+**3. Analyzer_one.py (4 métodos)**
+- `SemanticAnalyzer.extract_semantic_cube()` - **JUSTIFICACIÓN**: Extrae cubo semántico para coherencia
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Calcula complejidad semántica
+- `PerformanceAnalyzer.analyze_performance()` - **JUSTIFICACIÓN**: Analiza desempeño estratégico
+- `TextMiningEngine.diagnose_critical_links()` - **JUSTIFICACIÓN**: Diagnostica enlaces críticos de coherencia
+
+**4. embedding_policy.py (3 métodos)**
+- `PolicyAnalysisEmbedder.semantic_search()` - **JUSTIFICACIÓN**: Búsqueda semántica de coherencia
+- `PolicyAnalysisEmbedder.compare_policy_interventions()` - **JUSTIFICACIÓN**: Compara intervenciones para coherencia
+- `BayesianNumericalAnalyzer._compute_coherence()` - **JUSTIFICACIÓN**: Computa coherencia numérica
+
+---
+
+## DIMENSIÓN D3: PRODUCTOS Y FACTIBILIDAD OPERATIVA
+
+### D3-Q1: Indicadores y Fuentes
+**Pregunta**: ¿Los indicadores de producto tienen Línea Base, Meta y fuente de verificación?
+
+#### MÉTODOS PARTICIPANTES (19 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: Línea_Base, Meta, BPIN, PPI, fuente_verificación
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de indicadores
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para detectar indicadores
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa con pattern_specificity de fuente
+- `IndustrialPolicyProcessor._construct_evidence_bundle()` - **JUSTIFICACIÓN**: Empaqueta evidencia de indicadores
+
+**2. contradiction_deteccion.py (7 métodos)**
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae valores de LB y Meta
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza valores numéricos
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad LB-Meta
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Calcula divergencia LB-Meta
+- `PolicyContradictionDetector._extract_resource_mentions()` - **JUSTIFICACIÓN**: Extrae recursos asociados a indicadores
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Asigna confianza según especificidad de fuente
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Extrae contexto de indicadores
+
+**3. financiero_viabilidad_tablas.py (5 métodos)**
+- `PDETMunicipalPlanAnalyzer.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas de indicadores
+- `PDETMunicipalPlanAnalyzer._classify_tables()` - **JUSTIFICACIÓN**: Clasifica tablas de indicadores
+- `PDETMunicipalPlanAnalyzer._extract_financial_amounts()` - **JUSTIFICACIÓN**: Extrae montos asociados
+- `PDETMunicipalPlanAnalyzer._indicator_to_dict()` - **JUSTIFICACIÓN**: Convierte indicador a diccionario
+- `PDETMunicipalPlanAnalyzer.analyze_municipal_plan()` - **JUSTIFICACIÓN**: Análisis completo de indicadores
+
+**4. embedding_policy.py (2 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia de métricas
+- `PolicyAnalysisEmbedder._extract_numerical_values()` - **JUSTIFICACIÓN**: Extrae valores numéricos con contexto
+
+---
+
+### D3-Q2: Proporcionalidad Meta/Problema
+**Pregunta**: ¿Las metas de productos son proporcionales a la magnitud del problema (D1)?
+
+#### MÉTODOS PARTICIPANTES (22 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de proporcionalidad
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza relación D3-D1
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de proporcionalidad
+- `BayesianEvidenceScorer._calculate_shannon_entropy()` - **JUSTIFICACIÓN**: Penaliza desproporcionalidad
+
+**2. contradiction_deteccion.py (9 métodos)**
+- `PolicyContradictionDetector._detect_numerical_inconsistencies()` - **JUSTIFICACIÓN**: Compara meta con brecha de D1
+- `PolicyContradictionDetector._statistical_significance_test()` - **JUSTIFICACIÓN**: Test de proporcionalidad interna
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad meta-brecha
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Calcula divergencia meta/brecha
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae claims de D1 y D3
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza para comparación
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para proporcionalidad
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de comparación
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Actualiza confianza en proporcionalidad
+
+**3. Analyzer_one.py (3 métodos)**
+- `PerformanceAnalyzer.analyze_loss_function()` - **JUSTIFICACIÓN**: Función de pérdida operacional por desproporcionalidad
+- `PerformanceAnalyzer._calculate_loss_functions()` - **JUSTIFICACIÓN**: Calcula pérdida específica
+- `PerformanceAnalyzer._calculate_throughput_metrics()` - **JUSTIFICACIÓN**: Métricas de throughput meta/brecha
+
+**4. embedding_policy.py (3 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia numérica meta-brecha
+- `BayesianNumericalAnalyzer.compare_policies()` - **JUSTIFICACIÓN**: Compara proporcionalidad entre políticas
+- `BayesianNumericalAnalyzer._compute_coherence()` - **JUSTIFICACIÓN**: Computa coherencia numérica
+
+**5. financiero_viabilidad_tablas.py (3 métodos)**
+- `PDETMunicipalPlanAnalyzer.analyze_financial_feasibility()` - **JUSTIFICACIÓN**: Analiza factibilidad financiera de metas
+- `PDETMunicipalPlanAnalyzer._assess_financial_sustainability()` - **JUSTIFICACIÓN**: Evalúa sostenibilidad de metas
+- `PDETMunicipalPlanAnalyzer._bayesian_risk_inference()` - **JUSTIFICACIÓN**: Inferencia de riesgo por desproporcionalidad
+
+---
+
+### D3-Q3: Trazabilidad Presupuestal
+**Pregunta**: ¿Los productos tienen trazabilidad presupuestal (BPIN, PPI)?
+
+#### MÉTODOS PARTICIPANTES (16 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: BPIN, PPI, código_presupuestal
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de trazabilidad
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para detectar códigos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de trazabilidad
+
+**2. dereck_beach.py (4 métodos)**
+- `FinancialAuditor.trace_financial_allocation()` - **JUSTIFICACIÓN**: Traza asignación financiera completa
+- `FinancialAuditor._match_goal_to_budget()` - **JUSTIFICACIÓN**: Vincula producto con presupuesto
+- `FinancialAuditor._calculate_sufficiency()` - **JUSTIFICACIÓN**: Calcula suficiencia presupuestal
+- `FinancialAuditor._detect_allocation_gaps()` - **JUSTIFICACIÓN**: Detecta brechas de asignación
+
+**3. financiero_viabilidad_tablas.py (6 métodos)**
+- `PDETMunicipalPlanAnalyzer.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas presupuestales
+- `PDETMunicipalPlanAnalyzer._extract_from_budget_table()` - **JUSTIFICACIÓN**: Extrae datos de tablas BPIN/PPI
+- `PDETMunicipalPlanAnalyzer._extract_budget_for_pillar()` - **JUSTIFICACIÓN**: Extrae presupuesto por pilar
+- `PDETMunicipalPlanAnalyzer._identify_funding_source()` - **JUSTIFICACIÓN**: Identifica fuente de financiación
+- `PDETMunicipalPlanAnalyzer._analyze_funding_sources()` - **JUSTIFICACIÓN**: Analiza diversidad de fuentes
+- `PDETMunicipalPlanAnalyzer.analyze_financial_feasibility()` - **JUSTIFICACIÓN**: Analiza factibilidad financiera
+
+**4. contradiction_deteccion.py (2 métodos)**
+- `PolicyContradictionDetector._extract_resource_mentions()` - **JUSTIFICACIÓN**: Extrae menciones de recursos
+- `PolicyContradictionDetector._detect_resource_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos presupuestales
+
+---
+
+### D3-Q4: Factibilidad Temporal
+**Pregunta**: ¿Existe relación factible entre actividad, plazo y producto?
+
+#### MÉTODOS PARTICIPANTES (18 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de plazo
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de factibilidad
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis temporal
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de factibilidad
+
+**2. contradiction_deteccion.py (11 métodos)**
+- `PolicyContradictionDetector._detect_temporal_conflicts()` - **JUSTIFICACIÓN**: Detecta conflictos temporales actividad-producto
+- `TemporalLogicVerifier.verify_temporal_consistency()` - **JUSTIFICACIÓN**: Verifica consistencia temporal
+- `TemporalLogicVerifier._check_deadline_constraints()` - **JUSTIFICACIÓN**: Verifica restricciones de plazo
+- `TemporalLogicVerifier._classify_temporal_type()` - **JUSTIFICACIÓN**: Clasifica si plazo es realista para complejidad
+- `TemporalLogicVerifier._build_timeline()` - **JUSTIFICACIÓN**: Construye timeline actividad→producto
+- `TemporalLogicVerifier._parse_temporal_marker()` - **JUSTIFICACIÓN**: Parsea marcadores temporales
+- `TemporalLogicVerifier._has_temporal_conflict()` - **JUSTIFICACIÓN**: Detecta conflictos en timeline
+- `TemporalLogicVerifier._extract_resources()` - **JUSTIFICACIÓN**: Extrae recursos con temporalidad
+- `PolicyContradictionDetector._detect_resource_conflicts()` - **JUSTIFICACIÓN**: Verifica suficiencia de recursos para plazo
+- `PolicyContradictionDetector._extract_temporal_markers()` - **JUSTIFICACIÓN**: Extrae marcadores temporales
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para factibilidad temporal
+
+**3. Analyzer_one.py (3 métodos)**
+- `PerformanceAnalyzer._calculate_throughput_metrics()` - **JUSTIFICACIÓN**: Calcula métricas de throughput temporal
+- `PerformanceAnalyzer._detect_bottlenecks()` - **JUSTIFICACIÓN**: Detecta cuellos de botella temporales
+- `TextMiningEngine._assess_risks()` - **JUSTIFICACIÓN**: Evalúa riesgos de infactibilidad temporal
+
+---
+
+### D3-Q5: Eslabón Causal Producto-Resultado
+**Pregunta**: ¿El PDM explica cómo los productos conducen a resultados?
+
+#### MÉTODOS PARTICIPANTES (26 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: porque, lo_cual_contribuirá_a, mediador, eslabón
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza cadena D3→D4
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis causal
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Extrae contexto de mecanismos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de eslabón causal
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._determine_relation_type()` - **JUSTIFICACIÓN**: Clasifica fuerza relación Producto→Resultado
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo Producto→Resultado
+- `PolicyContradictionDetector._extract_policy_statements()` - **JUSTIFICACIÓN**: Extrae declaraciones de producto y resultado
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias causales
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Evalúa profundidad causal
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Mide coherencia semántica del eslabón
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Genera embeddings para similitud
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Calcula similitud producto-resultado
+
+**3. dereck_beach.py (18 métodos - ANÁLISIS COMPLETO DE MECANISMOS)**
+- `CausalExtractor.extract_causal_hierarchy()` - **JUSTIFICACIÓN**: Extrae jerarquía causal Producto→Resultado
+- `CausalExtractor._extract_causal_links()` - **JUSTIFICACIÓN**: Extrae enlaces causales explícitos
+- `CausalExtractor._extract_causal_justifications()` - **JUSTIFICACIÓN**: Extrae justificaciones del eslabón
+- `CausalExtractor._calculate_confidence()` - **JUSTIFICACIÓN**: Calcula confianza del eslabón
+- `MechanismPartExtractor.__init__()` - **JUSTIFICACIÓN**: Inicializa extractor de partes de mecanismo
+- `MechanismPartExtractor.extract_entity_activity()` - **JUSTIFICACIÓN**: Extrae entidad-actividad del mecanismo
+- `MechanismPartExtractor._find_subject_entity()` - **JUSTIFICACIÓN**: Encuentra entidad sujeto
+- `MechanismPartExtractor._find_action_verb()` - **JUSTIFICACIÓN**: Encuentra verbo de acción del mecanismo
+- `MechanismPartExtractor._validate_entity_activity()` - **JUSTIFICACIÓN**: Valida par entidad-actividad
+- `MechanismPartExtractor._calculate_ea_confidence()` - **JUSTIFICACIÓN**: Calcula confianza entidad-actividad
+- `BayesianMechanismInference.infer_mechanisms()` - **JUSTIFICACIÓN**: Infiere mecanismos de transmisión
+- `BayesianMechanismInference._build_transition_matrix()` - **JUSTIFICACIÓN**: Construye matriz de transición Producto→Resultado
+- `BayesianMechanismInference._calculate_type_transition_prior()` - **JUSTIFICACIÓN**: Calcula prior de transición de tipos
+- `BayesianMechanismInference._infer_activity_sequence()` - **JUSTIFICACIÓN**: Infiere secuencia de actividades
+- `BayesianMechanismInference._test_necessity()` - **JUSTIFICACIÓN**: Test de necesidad del producto para resultado (Hoop Test)
+- `BayesianMechanismInference._test_sufficiency()` - **JUSTIFICACIÓN**: Test de suficiencia del producto (Smoking Gun Test)
+- `BayesianMechanismInference._classify_mechanism_type()` - **JUSTIFICACIÓN**: Clasifica tipo de mecanismo
+- `BeachEvidentialTest.apply_test_logic()` - **JUSTIFICACIÓN**: Aplica tests evidenciales de Beach (4 tipos)
+
+**4. teoria_cambio.py (3 métodos)**
+- `TeoriaCambio.construir_grafo_causal()` - **JUSTIFICACIÓN**: Construye grafo causal D3→D4
+- `TeoriaCambio._es_conexion_valida()` - **JUSTIFICACIÓN**: Valida conexión Producto→Resultado
+- `TeoriaCambio._encontrar_caminos_completos()` - **JUSTIFICACIÓN**: Verifica ruta completa
+
+**5. Analyzer_one.py (2 métodos)**
+- `TextMiningEngine.diagnose_critical_links()` - **JUSTIFICACIÓN**: Diagnostica eslabones críticos
+- `TextMiningEngine._analyze_link_text()` - **JUSTIFICACIÓN**: Analiza texto del eslabón
+
+---
+
+## DIMENSIÓN D4: RESULTADOS, SUPUESTOS Y ALINEACIÓN
+
+### D4-Q1: Indicadores de Resultado
+**Pregunta**: ¿Los indicadores de resultado tienen LB, Meta y fuente de verificación?
+
+#### MÉTODOS PARTICIPANTES (18 métodos):
+*Similar a D3-Q1 pero enfocado en resultados de nivel superior*
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de indicadores de resultado
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa con pattern_specificity
+- `IndustrialPolicyProcessor._construct_evidence_bundle()` - **JUSTIFICACIÓN**: Empaqueta evidencia
+
+**2. contradiction_deteccion.py (6 métodos)**
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae LB y Meta de resultados
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza valores
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza según fuente
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de indicadores
+- `PolicyContradictionDetector._extract_temporal_markers()` - **JUSTIFICACIÓN**: Temporalidad de resultados
+
+**3. financiero_viabilidad_tablas.py (5 métodos)**
+- `PDETMunicipalPlanAnalyzer.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas de resultados
+- `PDETMunicipalPlanAnalyzer._indicator_to_dict()` - **JUSTIFICACIÓN**: Convierte indicador a dict
+- `PDETMunicipalPlanAnalyzer._find_outcome_mentions()` - **JUSTIFICACIÓN**: Encuentra menciones de resultados
+- `PDETMunicipalPlanAnalyzer.analyze_municipal_plan()` - **JUSTIFICACIÓN**: Análisis completo
+- `PDETMunicipalPlanAnalyzer._classify_tables()` - **JUSTIFICACIÓN**: Clasifica tablas de resultados
+
+**4. embedding_policy.py (2 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa métricas de resultado
+- `PolicyAnalysisEmbedder._extract_numerical_values()` - **JUSTIFICACIÓN**: Extrae valores con contexto
+
+---
+
+### D4-Q2: Cadena Causal y Supuestos
+**Pregunta**: ¿Se explicita la cadena causal mencionando supuestos y condiciones habilitantes?
+
+#### MÉTODOS PARTICIPANTES (24 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: supuesto, condición_habilitante, si_se_cumple
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza cadena causal completa
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Contexto de supuestos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de supuestos
+
+**2. contradiction_deteccion.py (9 métodos)**
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Visualiza Producto→Resultado con supuestos como aristas críticas
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Valida que sean supuestos reales, no declaraciones de intención
+- `PolicyContradictionDetector._extract_policy_statements()` - **JUSTIFICACIÓN**: Extrae declaraciones de supuestos
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias de supuestos
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Profundidad de dependencias
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Coherencia de supuestos
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Embeddings de supuestos
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Similitud entre supuestos
+- `PolicyContradictionDetector._calculate_syntactic_complexity()` - **JUSTIFICACIÓN**: Claridad de supuestos
+
+**3. dereck_beach.py (6 métodos)**
+- `CausalExtractor.extract_causal_hierarchy()` - **JUSTIFICACIÓN**: Extrae jerarquía con supuestos
+- `CausalExtractor._extract_causal_links()` - **JUSTIFICACIÓN**: Extrae enlaces causales condicionados
+- `BayesianMechanismInference.infer_mechanisms()` - **JUSTIFICACIÓN**: Infiere mecanismos bajo supuestos
+- `BayesianMechanismInference._test_necessity()` - **JUSTIFICACIÓN**: Test de necesidad de supuestos
+- `BayesianMechanismInference._test_sufficiency()` - **JUSTIFICACIÓN**: Test de suficiencia de supuestos
+- `BeachEvidentialTest.classify_test()` - **JUSTIFICACIÓN**: Clasifica tipo de test evidencial
+
+**4. teoria_cambio.py (4 métodos)**
+- `TeoriaCambio.construir_grafo_causal()` - **JUSTIFICACIÓN**: Construye grafo con supuestos
+- `TeoriaCambio._es_conexion_valida()` - **JUSTIFICACIÓN**: Valida conexiones bajo supuestos
+- `TeoriaCambio.validacion_completa()` - **JUSTIFICACIÓN**: Validación completa de supuestos
+- `TeoriaCambio._validar_orden_causal()` - **JUSTIFICACIÓN**: Valida orden causal con supuestos
+
+---
+
+### D4-Q3: Justificación de Ambición
+**Pregunta**: ¿La ambición de metas de resultado está justificada por inversión (D1-Q3)?
+
+#### MÉTODOS PARTICIPANTES (20 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de justificación
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza relación D4-D1
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de justificación
+- `BayesianEvidenceScorer._calculate_shannon_entropy()` - **JUSTIFICACIÓN**: Penaliza ambición injustificada
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._detect_numerical_inconsistencies()` - **JUSTIFICACIÓN**: Revisa coherencia inversión (D1-Q3) vs. meta ambiciosa
+- `PolicyContradictionDetector._calculate_objective_alignment()` - **JUSTIFICACIÓN**: Compara ambición con objetivos superiores/benchmarks
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad inversión-meta
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Calcula divergencia inversión/ambición
+- `PolicyContradictionDetector._statistical_significance_test()` - **JUSTIFICACIÓN**: Test de significancia de ambición
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae claims de inversión y meta
+- `PolicyContradictionDetector._extract_resource_mentions()` - **JUSTIFICACIÓN**: Extrae recursos de D1
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Actualiza confianza en justificación
+
+**3. financiero_viabilidad_tablas.py (4 métodos)**
+- `PDETMunicipalPlanAnalyzer.generate_recommendations()` - **JUSTIFICACIÓN**: Sugiere mejoras cuando validación falla
+- `PDETMunicipalPlanAnalyzer.analyze_financial_feasibility()` - **JUSTIFICACIÓN**: Analiza factibilidad de ambición
+- `PDETMunicipalPlanAnalyzer._assess_financial_sustainability()` - **JUSTIFICACIÓN**: Evalúa sostenibilidad de ambición
+- `PDETMunicipalPlanAnalyzer._bayesian_risk_inference()` - **JUSTIFICACIÓN**: Inferencia de riesgo por ambición excesiva
+
+**4. dereck_beach.py (1 método)**
+- `FinancialAuditor._calculate_sufficiency()` - **JUSTIFICACIÓN**: Calcula suficiencia recursos para ambición
+
+**5. embedding_policy.py (3 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia inversión-ambición
+- `BayesianNumericalAnalyzer.compare_policies()` - **JUSTIFICACIÓN**: Compara ambición con benchmarks
+- `BayesianNumericalAnalyzer._classify_evidence_strength()` - **JUSTIFICACIÓN**: Clasifica fuerza de justificación
+
+---
+
+### D4-Q4: Población Objetivo
+**Pregunta**: ¿Los resultados especifican población objetivo y cobertura?
+
+#### MÉTODOS PARTICIPANTES (15 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: población_objetivo, cobertura, beneficiarios
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (6 métodos)**
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae cifras de población/cobertura
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza cifras
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica rol de población
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de población objetivo
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Divergencia población/cobertura
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en especificación
+
+**3. Analyzer_one.py (3 métodos)**
+- `SemanticAnalyzer._classify_cross_cutting_themes()` - **JUSTIFICACIÓN**: Clasifica temas de población (género, víctimas, niñez)
+- `SemanticAnalyzer._classify_policy_domain()` - **JUSTIFICACIÓN**: Clasifica dominio de población
+- `SemanticAnalyzer.extract_semantic_cube()` - **JUSTIFICACIÓN**: Extrae cubo semántico de población
+
+**4. embedding_policy.py (2 métodos)**
+- `PolicyAnalysisEmbedder.semantic_search()` - **JUSTIFICACIÓN**: Búsqueda semántica de población
+- `AdvancedSemanticChunker._infer_pdq_context()` - **JUSTIFICACIÓN**: Infiere contexto de población
+
+---
+
+### D4-Q5: Alineación Externa
+**Pregunta**: ¿El plan declara alineación con marcos superiores (PND, ODS, Acuerdo de Paz)?
+
+#### MÉTODOS PARTICIPANTES (17 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: PND, ODS, Acuerdo_de_Paz, CONPES
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis de alineación
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de alineación
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Mide coherencia con embeddings de marcos normativos
+- `PolicyContradictionDetector._calculate_objective_alignment()` - **JUSTIFICACIÓN**: Calcula alineación con objetivos superiores
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Genera embeddings de marcos
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Similitud con marcos
+- `PolicyContradictionDetector._text_similarity()` - **JUSTIFICACIÓN**: Similitud textual
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de alineación
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Rol semántico de alineación
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en alineación
+
+**3. Analyzer_one.py (3 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Complejidad de alineación
+- `SemanticAnalyzer._classify_policy_domain()` - **JUSTIFICACIÓN**: Clasifica dominio de alineación
+- `SemanticAnalyzer.extract_semantic_cube()` - **JUSTIFICACIÓN**: Cubo semántico de alineación
+
+**4. embedding_policy.py (2 métodos)**
+- `PolicyAnalysisEmbedder.semantic_search()` - **JUSTIFICACIÓN**: Búsqueda semántica de marcos
+- `PolicyAnalysisEmbedder.compare_policy_interventions()` - **JUSTIFICACIÓN**: Compara con marcos superiores
+
+---
+
+## DIMENSIÓN D5: IMPACTOS Y RIESGOS SISTÉMICOS
+
+### D5-Q1: Definición de Impactos y Rezagos
+**Pregunta**: ¿El PDM define impactos de largo plazo con tiempo de maduración y rezago?
+
+#### MÉTODOS PARTICIPANTES (19 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: impacto, transformación_estructural, rezago, maduración
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza proyección D4→D5
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Contexto de impactos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._extract_temporal_markers()` - **JUSTIFICACIÓN**: Busca tiempo de maduración y rezago
+- `TemporalLogicVerifier._extract_resources()` - **JUSTIFICACIÓN**: Reutilizado para identificar factores de transmisión
+- `PolicyContradictionDetector._calculate_objective_alignment()` - **JUSTIFICACIÓN**: Evalúa alineación del impacto con visión estratégica
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo de transmisión Resultado→Impacto
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Profundidad de transmisión
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica factores de transmisión
+- `TemporalLogicVerifier._classify_temporal_type()` - **JUSTIFICACIÓN**: Clasifica tipo temporal de impacto
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en proyección
+
+**3. financiero_viabilidad_tablas.py (4 métodos)**
+- `PDETMunicipalPlanAnalyzer.estimate_causal_effects()` - **JUSTIFICACIÓN**: Estima efectos causales a largo plazo
+- `PDETMunicipalPlanAnalyzer._estimate_total_effect()` - **JUSTIFICACIÓN**: Estima efecto total con rezago
+- `PDETMunicipalPlanAnalyzer._bayesian_effect_inference()` - **JUSTIFICACIÓN**: Inferencia bayesiana de efectos
+- `PDETMunicipalPlanAnalyzer._find_all_paths()` - **JUSTIFICACIÓN**: Encuentra rutas de transmisión
+
+**4. Analyzer_one.py (2 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Complejidad de definición de impactos
+- `TextMiningEngine.diagnose_critical_links()` - **JUSTIFICACIÓN**: Diagnostica enlaces críticos de transmisión
+
+---
+
+### D5-Q2: Medición de Intangibles (Índices/Proxies)
+**Pregunta**: ¿Se utilizan índices o proxies para medir impactos intangibles?
+
+#### MÉTODOS PARTICIPANTES (16 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: índice_de, proxy, medición_indirecta
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (7 métodos)**
+- `PolicyContradictionDetector._extract_quantitative_claims()` - **JUSTIFICACIÓN**: Extrae valores de índices/proxies
+- `PolicyContradictionDetector._parse_number()` - **JUSTIFICACIÓN**: Normaliza valores
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica rol de proxy
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de proxies
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para proxies
+- `PolicyContradictionDetector._get_graph_statistics()` - **JUSTIFICACIÓN**: Mide densidad de conexiones del nodo de impacto
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en proxy
+
+**3. embedding_policy.py (3 métodos)**
+- `BayesianNumericalAnalyzer.evaluate_policy_metric()` - **JUSTIFICACIÓN**: Evalúa coherencia de proxies
+- `BayesianNumericalAnalyzer._classify_evidence_strength()` - **JUSTIFICACIÓN**: Clasifica fuerza de proxy
+- `PolicyAnalysisEmbedder._extract_numerical_values()` - **JUSTIFICACIÓN**: Extrae valores de índices
+
+**4. Analyzer_one.py (2 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Complejidad de medición
+- `PerformanceAnalyzer.analyze_performance()` - **JUSTIFICACIÓN**: Analiza desempeño de proxies
+
+---
+
+### D5-Q3: Limitaciones de Medición
+**Pregunta**: ¿Cuando un impacto es difícil de medir, se reconocen limitaciones?
+
+#### MÉTODOS PARTICIPANTES (14 métodos):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: limitación, difícil_de_medir, aproximación
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de reconocimiento
+
+**2. contradiction_deteccion.py (7 métodos)**
+- `PolicyContradictionDetector._classify_contradiction()` - **JUSTIFICACIÓN**: Pondera probabilidad de afirmación engañosa si faltan limitaciones
+- `PolicyContradictionDetector._calculate_severity()` - **JUSTIFICACIÓN**: Calcula severidad de omisión
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica rol de limitación
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de limitaciones
+- `PolicyContradictionDetector._calculate_syntactic_complexity()` - **JUSTIFICACIÓN**: Claridad de reconocimiento
+- `PolicyContradictionDetector._get_graph_statistics()` - **JUSTIFICACIÓN**: Estadísticas de nodo de impacto
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Ajusta confianza por limitaciones
+
+**3. Analyzer_one.py (3 métodos)**
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Complejidad de reconocimiento
+- `TextMiningEngine._assess_risks()` - **JUSTIFICACIÓN**: Evalúa riesgos de no reconocer limitaciones
+- `PerformanceAnalyzer._generate_recommendations()` - **JUSTIFICACIÓN**: Genera recomendaciones de mejora
+
+---
+
+### D5-Q4: Riesgos Sistémicos
+**Pregunta**: ¿Los impactos se alinean con marcos y consideran riesgos sistémicos?
+
+#### MÉTODOS PARTICIPANTES (22 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: riesgo_sistémico, ruptura_mecanismo, vulnerabilidad
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Contexto de riesgos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (10 métodos)**
+- `PolicyContradictionDetector._detect_logical_incompatibilities()` - **JUSTIFICACIÓN**: Verifica incompatibilidad estrategia-riesgos
+- `PolicyContradictionDetector._has_logical_conflict()` - **JUSTIFICACIÓN**: Detecta conflictos lógicos
+- `PolicyContradictionDetector._calculate_contradiction_entropy()` - **JUSTIFICACIÓN**: Mide distribución de tipos de riesgos (alta entropía = análisis completo)
+- `PolicyContradictionDetector._classify_contradiction()` - **JUSTIFICACIÓN**: Clasifica tipo de riesgo
+- `PolicyContradictionDetector._calculate_severity()` - **JUSTIFICACIÓN**: Severidad de riesgos
+- `PolicyContradictionDetector._generate_resolution_recommendations()` - **JUSTIFICACIÓN**: Recomendaciones de mitigación
+- `PolicyContradictionDetector._suggest_resolutions()` - **JUSTIFICACIÓN**: Resoluciones específicas
+- `PolicyContradictionDetector._calculate_objective_alignment()` - **JUSTIFICACIÓN**: Alineación con marcos
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Grafo de riesgos sistémicos
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en análisis de riesgos
+
+**3. financiero_viabilidad_tablas.py (5 métodos)**
+- `PDETMunicipalPlanAnalyzer.sensitivity_analysis()` - **JUSTIFICACIÓN**: Análisis de sensibilidad a riesgos
+- `PDETMunicipalPlanAnalyzer._identify_confounders()` - **JUSTIFICACIÓN**: Identifica confusores sistémicos
+- `PDETMunicipalPlanAnalyzer._vary_confounder_strength()` - **JUSTIFICACIÓN**: Varía fuerza de confusores
+- `PDETMunicipalPlanAnalyzer._bayesian_risk_inference()` - **JUSTIFICACIÓN**: Inferencia bayesiana de riesgos
+- `PDETMunicipalPlanAnalyzer._interpret_risk()` - **JUSTIFICACIÓN**: Interpreta nivel de riesgo
+
+**4. dereck_beach.py (6 métodos - AUDITORÍA DE RIESGOS SISTÉMICOS)**
+- `OperationalizationAuditor.__init__()` - **JUSTIFICACIÓN**: Inicializa auditor de operacionalización
+- `OperationalizationAuditor.audit_evidence_traceability()` - **JUSTIFICACIÓN**: Audita trazabilidad de evidencia para riesgos
+- `OperationalizationAuditor.bayesian_counterfactual_audit()` - **JUSTIFICACIÓN**: Auditoría contrafactual bayesiana de riesgos
+- `OperationalizationAuditor._audit_systemic_risk()` - **JUSTIFICACIÓN**: Audita riesgo sistémico específicamente
+- `OperationalizationAuditor._perform_counterfactual_budget_check()` - **JUSTIFICACIÓN**: Verifica presupuesto en escenarios contrafactuales
+- `OperationalizationAuditor._generate_optimal_remediations()` - **JUSTIFICACIÓN**: Genera remediaciones óptimas para riesgos
+
+**5. Analyzer_one.py (2 métodos)**
+- `TextMiningEngine._assess_risks()` - **JUSTIFICACIÓN**: Evalúa riesgos sistémicos
+- `PerformanceAnalyzer._detect_bottlenecks()` - **JUSTIFICACIÓN**: Detecta cuellos de botella sistémicos
+
+---
+
+### D5-Q5: Efectos No Deseados
+**Pregunta**: ¿La ambición del impacto es realista considerando efectos no deseados y trade-offs?
+
+#### MÉTODOS PARTICIPANTES (20 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: efecto_no_deseado, hipótesis_límite, trade-off
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Contexto de efectos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (7 métodos)**
+- `PolicyContradictionDetector._detect_logical_incompatibilities()` - **JUSTIFICACIÓN**: Detecta incompatibilidades lógicas (efectos no deseados)
+- `PolicyContradictionDetector._has_logical_conflict()` - **JUSTIFICACIÓN**: Verifica conflictos
+- `PolicyContradictionDetector._classify_contradiction()` - **JUSTIFICACIÓN**: Clasifica tipo de efecto
+- `PolicyContradictionDetector._calculate_severity()` - **JUSTIFICACIÓN**: Severidad de efectos
+- `PolicyContradictionDetector._generate_resolution_recommendations()` - **JUSTIFICACIÓN**: Recomendaciones de mitigación
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de efectos
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en análisis
+
+**3. financiero_viabilidad_tablas.py (6 métodos)**
+- `PDETMunicipalPlanAnalyzer.generate_counterfactual_scenarios()` - **JUSTIFICACIÓN**: Genera escenarios contrafactuales
+- `PDETMunicipalPlanAnalyzer._identify_intervention_targets()` - **JUSTIFICACIÓN**: Identifica objetivos de intervención
+- `PDETMunicipalPlanAnalyzer._simulate_intervention()` - **JUSTIFICACIÓN**: Simula intervención
+- `PDETMunicipalPlanAnalyzer._generate_scenario_narrative()` - **JUSTIFICACIÓN**: Genera narrativa de escenario
+- `PDETMunicipalPlanAnalyzer.sensitivity_analysis()` - **JUSTIFICACIÓN**: Análisis de sensibilidad
+- `PDETMunicipalPlanAnalyzer._bayesian_risk_inference()` - **JUSTIFICACIÓN**: Inferencia de riesgos
+
+**4. Analyzer_one.py (2 métodos)**
+- `TextMiningEngine._assess_risks()` - **JUSTIFICACIÓN**: Evalúa riesgos de efectos no deseados
+- `TextMiningEngine._generate_interventions()` - **JUSTIFICACIÓN**: Genera intervenciones de mitigación
+
+---
+
+## DIMENSIÓN D6: COHERENCIA CAUSAL (TEORÍA DE CAMBIO)
+**LA DIMENSIÓN MÁS COMPLEJA - CORAZÓN DEL ANÁLISIS CAUSAL**
+
+### D6-Q1: Estructura Causal (Teoría de Cambio Explícita)
+**Pregunta**: ¿Existe una teoría de cambio explícita, preferiblemente como DAG?
+
+#### MÉTODOS PARTICIPANTES (48 métodos - LA CADENA MÁS LARGA):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis causal completo
+- `IndustrialPolicyProcessor._analyze_causal_dimensions()` - **JUSTIFICACIÓN**: Analiza todas las dimensiones causales
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis causal
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia de ToC
+- `BayesianEvidenceScorer._calculate_shannon_entropy()` - **JUSTIFICACIÓN**: Penaliza incoherencia causal
+
+**2. contradiction_deteccion.py (10 métodos)**
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Genera nx.DiGraph de PolicyStatements (CRÍTICO)
+- `PolicyContradictionDetector._extract_policy_statements()` - **JUSTIFICACIÓN**: Extrae declaraciones para grafo
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Embeddings para similitud causal
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias causales
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Profundidad del DAG
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Coherencia semántica del DAG
+- `PolicyContradictionDetector._get_graph_statistics()` - **JUSTIFICACIÓN**: Estadísticas del DAG
+- `PolicyContradictionDetector._calculate_graph_fragmentation()` - **JUSTIFICACIÓN**: Fragmentación del DAG
+- `PolicyContradictionDetector._determine_relation_type()` - **JUSTIFICACIÓN**: Tipo de relación causal
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en ToC
+
+**3. teoria_cambio.py (12 métodos - MOTOR AXIOMÁTICO)**
+- `TeoriaCambio.construir_grafo_causal()` - **JUSTIFICACIÓN**: Construye DAG causal completo
+- `TeoriaCambio.validacion_completa()` - **JUSTIFICACIÓN**: Ejecuta validación estructural principal del DAG (CRÍTICO)
+- `TeoriaCambio._validar_orden_causal()` - **JUSTIFICACIÓN**: Detecta violaciones de orden (ej. Resultado precede a Actividad)
+- `TeoriaCambio._encontrar_caminos_completos()` - **JUSTIFICACIÓN**: Asegura ruta completa Causa→...→Impacto, expone saltos lógicos
+- `TeoriaCambio._extraer_categorias()` - **JUSTIFICACIÓN**: Extrae categorías causales (INSUMOS, ACTIVIDADES, etc.)
+- `TeoriaCambio._es_conexion_valida()` - **JUSTIFICACIÓN**: Valida conexiones causales
+- `TeoriaCambio._generar_sugerencias_internas()` - **JUSTIFICACIÓN**: Genera sugerencias basadas en fallas globales
+- `AdvancedDAGValidator.calculate_acyclicity_pvalue()` - **JUSTIFICACIÓN**: Complementa con pruebas de robustez estocástica (CRÍTICO)
+- `AdvancedDAGValidator._is_acyclic()` - **JUSTIFICACIÓN**: Verifica aciclicidad del DAG
+- `AdvancedDAGValidator._generate_subgraph()` - **JUSTIFICACIÓN**: Genera subgrafos para análisis
+- `AdvancedDAGValidator.get_graph_stats()` - **JUSTIFICACIÓN**: Estadísticas del DAG
+- `AdvancedDAGValidator._calculate_node_importance()` - **JUSTIFICACIÓN**: Importancia de nodos causales
+
+**4. dereck_beach.py (48 métodos - FRAMEWORK COMPLETO DE DEREK BEACH)**
+- `ConfigLoader.__init__()` - **JUSTIFICACIÓN**: Inicializa cargador de configuración
+- `ConfigLoader._load_config()` - **JUSTIFICACIÓN**: Carga configuración YAML
+- `ConfigLoader._load_default_config()` - **JUSTIFICACIÓN**: Carga configuración por defecto
+- `ConfigLoader._validate_config()` - **JUSTIFICACIÓN**: Valida esquema de configuración
+- `ConfigLoader.get()` - **JUSTIFICACIÓN**: Obtiene parámetro de configuración
+- `ConfigLoader.get_bayesian_threshold()` - **JUSTIFICACIÓN**: Obtiene umbral bayesiano
+- `ConfigLoader.get_mechanism_prior()` - **JUSTIFICACIÓN**: Obtiene prior de mecanismo
+- `ConfigLoader.get_performance_setting()` - **JUSTIFICACIÓN**: Obtiene configuración de desempeño
+- `ConfigLoader.update_priors_from_feedback()` - **JUSTIFICACIÓN**: Actualiza priors con retroalimentación
+- `ConfigLoader._save_prior_history()` - **JUSTIFICACIÓN**: Guarda historial de priors
+- `ConfigLoader._load_uncertainty_history()` - **JUSTIFICACIÓN**: Carga historial de incertidumbre
+- `ConfigLoader.check_uncertainty_reduction_criterion()` - **JUSTIFICACIÓN**: Verifica criterio de reducción de incertidumbre
+- `PDFProcessor.__init__()` - **JUSTIFICACIÓN**: Inicializa procesador de PDF
+- `PDFProcessor.load_document()` - **JUSTIFICACIÓN**: Carga documento PDF
+- `PDFProcessor.extract_text()` - **JUSTIFICACIÓN**: Extrae texto de PDF
+- `PDFProcessor.extract_tables()` - **JUSTIFICACIÓN**: Extrae tablas de PDF
+- `PDFProcessor.extract_sections()` - **JUSTIFICACIÓN**: Extrae secciones de PDF
+- `CausalExtractor.extract_causal_hierarchy()` - **JUSTIFICACIÓN**: Extrae jerarquía causal completa
+- `CausalExtractor._extract_causal_links()` - **JUSTIFICACIÓN**: Extrae enlaces causales
+- `CausalExtractor._build_type_hierarchy()` - **JUSTIFICACIÓN**: Construye jerarquía de tipos
+- `MechanismPartExtractor.__init__()` - **JUSTIFICACIÓN**: Inicializa extractor de partes de mecanismo
+- `MechanismPartExtractor.extract_entity_activity()` - **JUSTIFICACIÓN**: Extrae par entidad-actividad (CRÍTICO para ToC)
+- `MechanismPartExtractor._find_subject_entity()` - **JUSTIFICACIÓN**: Encuentra entidad sujeto en mecanismo
+- `MechanismPartExtractor._find_action_verb()` - **JUSTIFICACIÓN**: Encuentra verbo de acción
+- `MechanismPartExtractor._validate_entity_activity()` - **JUSTIFICACIÓN**: Valida coherencia del par
+- `MechanismPartExtractor._calculate_ea_confidence()` - **JUSTIFICACIÓN**: Calcula confianza del par
+- `BayesianMechanismInference.infer_mechanisms()` - **JUSTIFICACIÓN**: Infiere mecanismos causales
+- `BayesianMechanismInference._test_necessity()` - **JUSTIFICACIÓN**: Test de necesidad (Hoop Test)
+- `BayesianMechanismInference._test_sufficiency()` - **JUSTIFICACIÓN**: Test de suficiencia (Smoking Gun)
+- `BeachEvidentialTest.__init__()` - **JUSTIFICACIÓN**: Inicializa tests evidenciales
+- `BeachEvidentialTest.classify_test()` - **JUSTIFICACIÓN**: Clasifica tipo de test (4 tipos: Hoop, Smoking Gun, Doubly Decisive, Straw in Wind)
+- `BeachEvidentialTest.apply_test_logic()` - **JUSTIFICACIÓN**: Aplica lógica de test según tipo
+- `CausalInferenceSetup.__init__()` - **JUSTIFICACIÓN**: Inicializa setup de inferencia causal
+- `CausalInferenceSetup.classify_goal_dynamics()` - **JUSTIFICACIÓN**: Clasifica dinámica de objetivos
+- `CausalInferenceSetup.identify_failure_points()` - **JUSTIFICACIÓN**: Identifica puntos de falla
+- `CausalInferenceSetup.assign_probative_value()` - **JUSTIFICACIÓN**: Asigna valor probatorio
+- `CausalInferenceSetup._get_dynamics_pattern()` - **JUSTIFICACIÓN**: Obtiene patrón de dinámica
+- `OperationalizationAuditor.__init__()` - **JUSTIFICACIÓN**: Inicializa auditor de operacionalización
+- `OperationalizationAuditor.audit_evidence_traceability()` - **JUSTIFICACIÓN**: Audita trazabilidad de evidencia
+- `OperationalizationAuditor.bayesian_counterfactual_audit()` - **JUSTIFICACIÓN**: Auditoría contrafactual bayesiana
+- `OperationalizationAuditor._audit_systemic_risk()` - **JUSTIFICACIÓN**: Audita riesgo sistémico
+- `OperationalizationAuditor._perform_counterfactual_budget_check()` - **JUSTIFICACIÓN**: Verifica presupuesto contrafactual
+- `OperationalizationAuditor._generate_optimal_remediations()` - **JUSTIFICACIÓN**: Genera remediaciones óptimas
+- `CDAFFramework.__init__()` - **JUSTIFICACIÓN**: Inicializa framework CDAF
+- `CDAFFramework.process_document()` - **JUSTIFICACIÓN**: Procesa documento completo
+- `CDAFFramework._audit_causal_coherence()` - **JUSTIFICACIÓN**: Audita coherencia causal completa
+- `CDAFFramework._validate_dnp_compliance()` - **JUSTIFICACIÓN**: Valida cumplimiento DNP
+- `CDAFFramework._generate_extraction_report()` - **JUSTIFICACIÓN**: Genera reporte de extracción
+
+**5. financiero_viabilidad_tablas.py (3 métodos)**
+- `PDETMunicipalPlanAnalyzer.construct_causal_dag()` - **JUSTIFICACIÓN**: Construye DAG causal desde tablas
+- `PDETMunicipalPlanAnalyzer._identify_causal_nodes()` - **JUSTIFICACIÓN**: Identifica nodos causales
+- `PDETMunicipalPlanAnalyzer._identify_causal_edges()` - **JUSTIFICACIÓN**: Identifica aristas causales
+
+---
+
+### D6-Q2: Proporcionalidad y Continuidad (Anti-Milagro)
+**Pregunta**: ¿Los saltos en la cadena causal son proporcionales y realistas (sin "milagros")?
+
+#### MÉTODOS PARTICIPANTES (28 métodos - VERIFICACIÓN ANTI-MILAGRO):
+
+**1. policy_processor.py (6 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca 3 categorías de patrones:
+  - enlaces_proporcionales: proporcional_a, acorde_con, razonable, realista
+  - sin_saltos: sin_saltos, gradual, incremental, paso_a_paso
+  - no_milagros: factible, posible, alcanzable, sin_suponer
+- `IndustrialPolicyProcessor._compile_pattern_registry()` - **JUSTIFICACIÓN**: Compila patrones anti-milagro
+- `IndustrialPolicyProcessor._build_point_patterns()` - **JUSTIFICACIÓN**: Construye patrones específicos
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta verificación
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta para análisis
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia (min_score: 0.0 si milagro detectado)
+
+**2. contradiction_deteccion.py (12 métodos)**
+- `PolicyContradictionDetector._calculate_syntactic_complexity()` - **JUSTIFICACIÓN**: Evalúa claridad de ToC
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo para detectar saltos
+- `PolicyContradictionDetector._get_dependency_depth()` - **JUSTIFICACIÓN**: Profundidad de saltos
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias entre eslabones
+- `PolicyContradictionDetector._determine_relation_type()` - **JUSTIFICACIÓN**: Clasifica fuerza de relación
+- `PolicyContradictionDetector._calculate_numerical_divergence()` - **JUSTIFICACIÓN**: Divergencia numérica entre eslabones
+- `PolicyContradictionDetector._statistical_significance_test()` - **JUSTIFICACIÓN**: Test de proporcionalidad
+- `PolicyContradictionDetector._detect_numerical_inconsistencies()` - **JUSTIFICACIÓN**: Detecta saltos inverosímiles
+- `PolicyContradictionDetector._are_comparable_claims()` - **JUSTIFICACIÓN**: Verifica comparabilidad de eslabones
+- `PolicyContradictionDetector._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC 95% para proporcionalidad
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Contexto de saltos
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en proporcionalidad
+
+**3. teoria_cambio.py (6 métodos)**
+- `TeoriaCambio.validacion_completa()` - **JUSTIFICACIÓN**: Validación completa de proporcionalidad
+- `TeoriaCambio._encontrar_caminos_completos()` - **JUSTIFICACIÓN**: Detecta saltos lógicos en rutas
+- `TeoriaCambio._validar_orden_causal()` - **JUSTIFICACIÓN**: Valida orden lógico
+- `AdvancedDAGValidator.calculate_acyclicity_pvalue()` - **JUSTIFICACIÓN**: Robustez estocástica
+- `AdvancedDAGValidator._calculate_statistical_power()` - **JUSTIFICACIÓN**: Poder estadístico de validación
+- `AdvancedDAGValidator._calculate_bayesian_posterior()` - **JUSTIFICACIÓN**: Posterior bayesiano de proporcionalidad
+
+**4. dereck_beach.py (19 métodos - TESTS EVIDENCIALES COMPLETOS)**
+- `BeachEvidentialTest.classify_test()` - **JUSTIFICACIÓN**: Clasifica tipo de test evidencial:
+  - **Hoop Test**: Evidencia necesaria pero no suficiente (elimina hipótesis si falla)
+  - **Smoking Gun Test**: Evidencia suficiente pero no necesaria (confirma hipótesis si pasa)
+  - **Doubly Decisive Test**: Evidencia necesaria Y suficiente (confirma/elimina definitivamente)
+  - **Straw in Wind Test**: Evidencia ni necesaria ni suficiente (actualiza probabilidades levemente)
+- `BeachEvidentialTest.apply_test_logic()` - **JUSTIFICACIÓN**: Aplica lógica de test según tipo
+- `BayesianMechanismInference._test_necessity()` - **JUSTIFICACIÓN**: Test de necesidad de eslabones (Hoop Test)
+- `BayesianMechanismInference._test_sufficiency()` - **JUSTIFICACIÓN**: Test de suficiencia de eslabones (Smoking Gun Test)
+- `BayesianMechanismInference._build_transition_matrix()` - **JUSTIFICACIÓN**: Construye matriz de transición para proporcionalidad
+- `BayesianMechanismInference._calculate_type_transition_prior()` - **JUSTIFICACIÓN**: Calcula prior de transición
+- `BayesianMechanismInference._infer_activity_sequence()` - **JUSTIFICACIÓN**: Infiere secuencia de actividades (detecta saltos)
+- `BayesianMechanismInference._aggregate_bayesian_confidence()` - **JUSTIFICACIÓN**: Agrega confianza bayesiana
+- `CausalInferenceSetup.__init__()` - **JUSTIFICACIÓN**: Inicializa setup de inferencia causal
+- `CausalInferenceSetup.classify_goal_dynamics()` - **JUSTIFICACIÓN**: Clasifica dinámica de objetivos (gradual vs. abrupta) - CRÍTICO para detectar saltos
+- `CausalInferenceSetup.identify_failure_points()` - **JUSTIFICACIÓN**: Identifica puntos de falla en proporcionalidad - CRÍTICO para anti-milagro
+- `CausalInferenceSetup.assign_probative_value()` - **JUSTIFICACIÓN**: Asigna valor probatorio a evidencia de proporcionalidad
+- `CausalInferenceSetup._get_dynamics_pattern()` - **JUSTIFICACIÓN**: Obtiene patrón de dinámica (incremental, exponencial, abrupto)
+- `OperationalizationAuditor.__init__()` - **JUSTIFICACIÓN**: Inicializa auditor
+- `OperationalizationAuditor._audit_systemic_risk()` - **JUSTIFICACIÓN**: Audita riesgo de saltos inverosímiles
+- `OperationalizationAuditor.bayesian_counterfactual_audit()` - **JUSTIFICACIÓN**: Auditoría contrafactual de proporcionalidad
+
+---
+
+### D6-Q3: Inconsistencias (Sistema Bicameral - Ruta 1)
+**Pregunta**: ¿El plan reconoce inconsistencias en su lógica causal?
+
+#### MÉTODOS PARTICIPANTES (22 métodos - RUTA DE DETECCIÓN ESPECÍFICA):
+
+**1. policy_processor.py (4 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de inconsistencia
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta detección
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (14 métodos - RUTA 1: DETECCIÓN LOCAL)**
+- `PolicyContradictionDetector._detect_logical_incompatibilities()` - **JUSTIFICACIÓN**: Identifica fallos estructurales/contradicciones directas (CRÍTICO)
+- `PolicyContradictionDetector.detect()` - **JUSTIFICACIÓN**: Método principal de detección
+- `PolicyContradictionDetector._detect_semantic_contradictions()` - **JUSTIFICACIÓN**: Contradicciones semánticas
+- `PolicyContradictionDetector._detect_numerical_inconsistencies()` - **JUSTIFICACIÓN**: Inconsistencias numéricas
+- `PolicyContradictionDetector._detect_temporal_conflicts()` - **JUSTIFICACIÓN**: Conflictos temporales
+- `PolicyContradictionDetector._detect_resource_conflicts()` - **JUSTIFICACIÓN**: Conflictos de recursos
+- `PolicyContradictionDetector._classify_contradiction()` - **JUSTIFICACIÓN**: Clasifica tipo (NUMERICAL_INCONSISTENCY, TEMPORAL_CONFLICT)
+- `PolicyContradictionDetector._calculate_severity()` - **JUSTIFICACIÓN**: Calcula severidad
+- `PolicyContradictionDetector._generate_resolution_recommendations()` - **JUSTIFICACIÓN**: Genera recomendaciones basadas en contradicción (CRÍTICO)
+- `PolicyContradictionDetector._suggest_resolutions()` - **JUSTIFICACIÓN**: Sub-método con resoluciones específicas por tipo (CRÍTICO)
+- `PolicyContradictionDetector._calculate_contradiction_entropy()` - **JUSTIFICACIÓN**: Entropía de contradicciones
+- `PolicyContradictionDetector._get_domain_weight()` - **JUSTIFICACIÓN**: Peso de dominio
+- `PolicyContradictionDetector._has_logical_conflict()` - **JUSTIFICACIÓN**: Verifica conflicto lógico
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en detección
+
+**3. Analyzer_one.py (2 métodos)**
+- `TextMiningEngine.diagnose_critical_links()` - **JUSTIFICACIÓN**: Diagnostica enlaces críticos
+- `TextMiningEngine._identify_critical_links()` - **JUSTIFICACIÓN**: Identifica enlaces críticos
+
+**4. teoria_cambio.py (2 métodos)**
+- `TeoriaCambio.validacion_completa()` - **JUSTIFICACIÓN**: Validación completa para detectar inconsistencias
+- `TeoriaCambio._validar_orden_causal()` - **JUSTIFICACIÓN**: Detecta violaciones de orden
+
+---
+
+### D6-Q4: Adaptación (Sistema Bicameral - Ruta 2)
+**Pregunta**: ¿Se describe sistema de monitoreo con mecanismos de corrección y aprendizaje?
+
+#### MÉTODOS PARTICIPANTES (26 métodos - RUTA DE INFERENCIA ESTRUCTURAL):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones: piloto, prueba, validación, mecanismos_corrección, aprendizaje
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Contexto de mecanismos
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. teoria_cambio.py (12 métodos - RUTA 2: MOTOR AXIOMÁTICO)**
+- `TeoriaCambio.validacion_completa()` - **JUSTIFICACIÓN**: Valida grafo generado por _build_knowledge_graph (CRÍTICO)
+- `TeoriaCambio._validar_orden_causal()` - **JUSTIFICACIÓN**: Detecta violaciones de orden (CRÍTICO)
+- `TeoriaCambio._encontrar_caminos_completos()` - **JUSTIFICACIÓN**: Verifica integridad de rutas causales (CRÍTICO)
+- `TeoriaCambio._generar_sugerencias_internas()` - **JUSTIFICACIÓN**: Genera recomendaciones basadas en fallas globales (CRÍTICO):
+  - Si categorias_faltantes → "Integridad estructural comprometida. Incorporar: [nombres]"
+  - Si violaciones_orden → "Corregir [número] violaciones de secuencia causal"
+  - Si no hay rutas completas → "Teoría incompleta. Establecer camino INSUMOS→CAUSALIDAD"
+- `TeoriaCambio._execute_generar_sugerencias_internas()` - **JUSTIFICACIÓN**: Wrapper que invoca método estático
+- `TeoriaCambio._extraer_categorias()` - **JUSTIFICACIÓN**: Extrae categorías para validación
+- `TeoriaCambio._es_conexion_valida()` - **JUSTIFICACIÓN**: Valida conexiones
+- `TeoriaCambio.construir_grafo_causal()` - **JUSTIFICACIÓN**: Construye grafo para validación
+- `AdvancedDAGValidator.calculate_acyclicity_pvalue()` - **JUSTIFICACIÓN**: Provee análisis estocástico complementario sobre aciclicidad (CRÍTICO)
+- `AdvancedDAGValidator._perform_sensitivity_analysis_internal()` - **JUSTIFICACIÓN**: Análisis de sensibilidad
+- `AdvancedDAGValidator._calculate_confidence_interval()` - **JUSTIFICACIÓN**: IC para validación
+- `AdvancedDAGValidator.get_graph_stats()` - **JUSTIFICACIÓN**: Estadísticas del DAG
+
+**3. contradiction_deteccion.py (5 métodos)**
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Construye grafo para validación estructural
+- `PolicyContradictionDetector._get_graph_statistics()` - **JUSTIFICACIÓN**: Estadísticas del grafo
+- `PolicyContradictionDetector._calculate_graph_fragmentation()` - **JUSTIFICACIÓN**: Fragmentación del grafo
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Identifica dependencias
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en validación
+
+**4. Analyzer_one.py (2 métodos)**
+- `PerformanceAnalyzer._generate_recommendations()` - **JUSTIFICACIÓN**: Genera recomendaciones de mejora
+- `TextMiningEngine._generate_interventions()` - **JUSTIFICACIÓN**: Genera intervenciones
+
+**5. dereck_beach.py (12 métodos adicionales - VALIDACIÓN Y REPORTES)**
+- `CDAFFramework._validate_dnp_compliance()` - **JUSTIFICACIÓN**: Valida cumplimiento con estándares DNP
+- `CDAFFramework._generate_extraction_report()` - **JUSTIFICACIÓN**: Genera reporte de extracción
+- `CDAFFramework._generate_causal_model_json()` - **JUSTIFICACIÓN**: Genera modelo causal en JSON
+- `CDAFFramework._generate_dnp_compliance_report()` - **JUSTIFICACIÓN**: Genera reporte de cumplimiento DNP
+- `OperationalizationAuditor.audit_evidence_traceability()` - **JUSTIFICACIÓN**: Audita trazabilidad de evidencia
+- `OperationalizationAuditor._perform_counterfactual_budget_check()` - **JUSTIFICACIÓN**: Verifica presupuesto contrafactual
+- `FinancialAuditor.__init__()` - **JUSTIFICACIÓN**: Inicializa auditor financiero
+- `FinancialAuditor.trace_financial_allocation()` - **JUSTIFICACIÓN**: Traza asignación financiera
+- `FinancialAuditor._match_goal_to_budget()` - **JUSTIFICACIÓN**: Vincula objetivo con presupuesto
+- `FinancialAuditor._calculate_sufficiency()` - **JUSTIFICACIÓN**: Calcula suficiencia presupuestal
+- `FinancialAuditor._detect_allocation_gaps()` - **JUSTIFICACIÓN**: Detecta brechas de asignación
+- `MechanismTypeConfig.check_sum_to_one()` - **JUSTIFICACIÓN**: Verifica que priors sumen 1.0
+
+**6. financiero_viabilidad_tablas.py (2 métodos)**
+- `PDETMunicipalPlanAnalyzer.generate_recommendations()` - **JUSTIFICACIÓN**: Genera recomendaciones cuando validación falla
+- `PDETMunicipalPlanAnalyzer._generate_optimal_remediations()` - **JUSTIFICACIÓN**: Genera remediaciones óptimas
+
+---
+
+### D6-Q5: Contextualización y Enfoque Diferencial
+**Pregunta**: ¿La lógica causal considera el contexto y reconoce enfoque diferencial?
+
+#### MÉTODOS PARTICIPANTES (24 métodos):
+
+**1. policy_processor.py (5 métodos)**
+- `IndustrialPolicyProcessor._match_patterns_in_sentences()` - **JUSTIFICACIÓN**: Busca patrones de enfoque diferencial:
+  - mujeres_rurales, población_migrante, víctimas_conflicto
+  - restricciones_territoriales, contexto_local
+- `IndustrialPolicyProcessor.process()` - **JUSTIFICACIÓN**: Orquesta análisis contextual
+- `PolicyTextProcessor.segment_into_sentences()` - **JUSTIFICACIÓN**: Segmenta texto
+- `PolicyTextProcessor.extract_contextual_window()` - **JUSTIFICACIÓN**: Extrae contexto diferencial
+- `BayesianEvidenceScorer.compute_evidence_score()` - **JUSTIFICACIÓN**: Puntúa evidencia
+
+**2. contradiction_deteccion.py (8 métodos)**
+- `PolicyContradictionDetector._generate_embeddings()` - **JUSTIFICACIÓN**: Compara declaraciones con embeddings canónicos de vulnerabilidad
+- `PolicyContradictionDetector._calculate_similarity()` - **JUSTIFICACIÓN**: Similitud con embeddings de vulnerabilidad
+- `PolicyContradictionDetector._identify_dependencies()` - **JUSTIFICACIÓN**: Detecta dependencias respecto a variables contextuales/diferenciales
+- `PolicyContradictionDetector._determine_semantic_role()` - **JUSTIFICACIÓN**: Clasifica rol semántico de contexto
+- `PolicyContradictionDetector._calculate_global_semantic_coherence()` - **JUSTIFICACIÓN**: Coherencia contextual
+- `PolicyContradictionDetector._get_context_window()` - **JUSTIFICACIÓN**: Ventana de contexto
+- `PolicyContradictionDetector._build_knowledge_graph()` - **JUSTIFICACIÓN**: Grafo con nodos contextuales
+- `BayesianConfidenceCalculator.calculate_posterior()` - **JUSTIFICACIÓN**: Confianza en contextualización
+
+**3. Analyzer_one.py (7 métodos)**
+- `SemanticAnalyzer._classify_cross_cutting_themes()` - **JUSTIFICACIÓN**: Verifica correspondencia con temas transversales relevantes (CRÍTICO)
+- `SemanticAnalyzer._classify_policy_domain()` - **JUSTIFICACIÓN**: Clasifica dominio de política
+- `SemanticAnalyzer.extract_semantic_cube()` - **JUSTIFICACIÓN**: Extrae cubo semántico contextual
+- `SemanticAnalyzer._process_segment()` - **JUSTIFICACIÓN**: Procesa segmentos contextuales
+- `SemanticAnalyzer._vectorize_segments()` - **JUSTIFICACIÓN**: Vectoriza para análisis
+- `SemanticAnalyzer._calculate_semantic_complexity()` - **JUSTIFICACIÓN**: Complejidad de contextualización
+- `MunicipalOntology.__init__()` - **JUSTIFICACIÓN**: Ontología con contexto municipal
+
+**4. embedding_policy.py (4 métodos)**
+- `PolicyAnalysisEmbedder.semantic_search()` - **JUSTIFICACIÓN**: Búsqueda semántica de contexto
+- `PolicyAnalysisEmbedder._filter_by_pdq()` - **JUSTIFICACIÓN**: Filtra por contexto PDQ
+- `AdvancedSemanticChunker._infer_pdq_context()` - **JUSTIFICACIÓN**: Infiere contexto PDQ
+- `PolicyAnalysisEmbedder.compare_policy_interventions()` - **JUSTIFICACIÓN**: Compara intervenciones contextuales
+
+---
+
+## RESUMEN EJECUTIVO: COBERTURA TOTAL
+
+**TOTAL DE MÉTODOS MAPEADOS**: 416 métodos de 82 clases en 9 archivos
+
+**DISTRIBUCIÓN POR ARCHIVO**:
+- **dereck_beach.py: 99 métodos (23.8%) - COBERTURA 100% ✅ - EL ARCHIVO CLAVE**
+  - BeachEvidentialTest: 2 métodos (4 tipos de tests)
+  - CDAFException: 3 métodos
+  - ConfigLoader: 12 métodos
+  - PDFProcessor: 5 métodos
+  - CausalExtractor: 14 métodos
+  - MechanismPartExtractor: 5 métodos
+  - BayesianMechanismInference: 9 métodos
+  - CausalInferenceSetup: 4 métodos
+  - OperationalizationAuditor: 5 métodos
+  - FinancialAuditor: 5 métodos
+  - CDAFFramework: 7 métodos
+  - MechanismTypeConfig: 1 método
+  - Dataclasses/Configs: 27 métodos adicionales
+- contradiction_deteccion.py: 62 métodos (14.9%)
+- financiero_viabilidad_tablas.py: 65 métodos (15.6%)
+- report_assembly.py: 43 métodos (10.3%)
+- embedding_policy.py: 36 métodos (8.7%)
+- Analyzer_one.py: 34 métodos (8.2%)
+- policy_processor.py: 32 métodos (7.7%)
+- teoria_cambio.py: 30 métodos (7.2%)
+- semantic_chunking_policy.py: 15 métodos (3.6%)
+
+**DISTRIBUCIÓN POR DIMENSIÓN**:
+- D1 (Diagnóstico): 5 preguntas, ~80 métodos
+- D2 (Actividades): 5 preguntas, ~107 métodos
+- D3 (Productos): 5 preguntas, ~101 métodos
+- D4 (Resultados): 5 preguntas, ~94 métodos
+- D5 (Impactos): 5 preguntas, ~91 métodos
+- D6 (Causalidad): 5 preguntas, ~155 métodos (**LA MÁS COMPLEJA**)
+
+**CARACTERÍSTICAS ESPECIALES**:
+1. **Sistema Bicameral (D6-Q3/Q4)**: Dos rutas paralelas de resolución
+   - Ruta 1: PolicyContradictionDetector._suggest_resolutions (detección local)
+   - Ruta 2: TeoriaCambio._generar_sugerencias_internas (inferencia estructural)
+
+2. **Anti-Milagro Validation (D6-Q2)**: 3 categorías de patrones
+   - enlaces_proporcionales (proporcional_a, acorde_con, razonable, realista)
+   - sin_saltos (sin_saltos, gradual, incremental, paso_a_paso)
+   - no_milagros (factible, posible, alcanzable, sin_suponer)
+
+3. **Derek Beach Process Tracing (100% INTEGRADO)**: 4 tests evidenciales
+   - **Hoop Test** (Necesario pero NO Suficiente):
+     * Si FALLA → Hipótesis eliminada definitivamente
+     * Si PASA → Hipótesis sobrevive pero no confirmada
+     * Implementado en: `BayesianMechanismInference._test_necessity()`
+
+   - **Smoking Gun Test** (Suficiente pero NO Necesario):
+     * Si PASA → Hipótesis confirmada definitivamente
+     * Si FALLA → Hipótesis sobrevive pero no confirmada
+     * Implementado en: `BayesianMechanismInference._test_sufficiency()`
+
+   - **Doubly Decisive Test** (Necesario Y Suficiente):
+     * Si PASA → Hipótesis confirmada definitivamente
+     * Si FALLA → Hipótesis eliminada definitivamente
+     * Implementado en: `BeachEvidentialTest.apply_test_logic()` (tipo DOUBLY_DECISIVE)
+
+   - **Straw in Wind Test** (Ni Necesario Ni Suficiente):
+     * Actualiza probabilidades levemente en cualquier dirección
+     * No confirma ni elimina hipótesis
+     * Implementado en: `BeachEvidentialTest.apply_test_logic()` (tipo STRAW_IN_WIND)
+
+4. **Framework CDAF Completo**:
+   - ConfigLoader: Gestión de configuración bayesiana con actualización de priors
+   - PDFProcessor: Extracción de texto, tablas y secciones
+   - CausalExtractor: Extracción de jerarquía causal completa (14 métodos)
+   - MechanismPartExtractor: Extracción de entidad-actividad
+   - BayesianMechanismInference: Inferencia bayesiana de mecanismos (9 métodos)
+   - CausalInferenceSetup: Clasificación de dinámica y puntos de falla
+   - OperationalizationAuditor: Auditoría de trazabilidad y riesgo sistémico
+   - FinancialAuditor: Trazabilidad financiera completa
+   - CDAFFramework: Orquestador principal con validación DNP
