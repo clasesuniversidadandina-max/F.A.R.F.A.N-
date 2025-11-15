@@ -33,7 +33,7 @@ from functools import lru_cache
 from itertools import chain
 
 try:
-    from contradiction_deteccion import (
+    from .contradiction_deteccion import (
         BayesianConfidenceCalculator,
         PolicyContradictionDetector,
         TemporalLogicVerifier,
@@ -99,14 +99,14 @@ except Exception as import_error:  # pragma: no cover - safety net for heavy dep
         SEGUIMIENTO = "seguimiento y evaluación"
         TERRITORIAL = "ordenamiento territorial"
 
-from Analyzer_one import (
+from .Analyzer_one import (
     DocumentProcessor,
     MunicipalAnalyzer,
     MunicipalOntology,
     PerformanceAnalyzer,
     SemanticAnalyzer,
 )
-from financiero_viabilidad_tablas import QualityScore, PDETAnalysisException
+from .financiero_viabilidad_tablas import QualityScore, PDETAnalysisException
 
 # ============================================================================
 # LOGGING CONFIGURATION
